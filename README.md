@@ -7,9 +7,13 @@ time information to people waiting for a bus.
 
 ### Front-end
 
-This app was created in React using Apollo and GraphQL.
+Deployed [here](https://epic-euclid-7b3828.netlify.com)
 
-Dependancy list:
+This app was created in React.
+
+Dependency list:
+
+meet an un-styled MVP with:
 
 -   React
 -   Hooks
@@ -19,7 +23,6 @@ Dependancy list:
 
 -   Displays the next 2 arrival times for all bus routes queried from the server
     given a stop (or multiple stops).
--   Mobile first design.
 
 ### Back-end
 
