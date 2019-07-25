@@ -3,16 +3,17 @@ const {nextArrival} = require('./ArrivalTimes');
 const resolvers = {
 	Query: {
 		sanityCheck: () => 'You are not insane',
-		time: (parent, args) => {
-			return {value: args.time, stops: nextArrival[args.time]};
-		}
+		time: (parent, args) => ({
+			value: args.time,
+			stops: nextArrival[args.time]
+		})
 	},
 	Time: {
 		value: parent => parent.value,
-		stops: parent => parent.stops,
-		stop: (parent, args) => [
-			{name: args.name, buses: parent.stops[args.name]}
-		]
+		stop: (parent, args) => ({
+			name: args.name,
+			buses: parent.stops[args.name]
+		})
 	},
 	Stop: {
 		name: parent => parent.name,
