@@ -1,11 +1,21 @@
 {
-	"name": "foobar-app",
-	"version": "0.1.0",
+	"name": "backend",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
 	"scripts": {
-		"postinstall": "cd backend && yarn install && yarn start"
+		"server": "nodemon index.js",
+		"start": "node index.js"
+	},
+	"dependencies": {
+		"graphql-yoga": "^1.18.1"
+	},
+	"devDependencies": {
+		"nodemon": "^1.19.1"
 	},
 	"engines": {
 		"node": "^11.8.0",
 		"yarn": "^1.13"
-	}
+	},
+	"repository": "https://github.com/StephenBondor/bus-when.git"
 }
