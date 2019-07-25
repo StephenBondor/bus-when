@@ -1,7 +1,7 @@
 const {GraphQLServer} = require('graphql-yoga');
 const {gqlArrivals} = require('./ArrivalTimes');
+var port = process.env.PORT || 4000;
 
-// 2
 const resolvers = {
 	Query: {
 		sanityCheck: () => 'You are not insane',
@@ -18,11 +18,10 @@ const resolvers = {
 	}
 };
 
-// 3
 const server = new GraphQLServer({
 	typeDefs: './src/schema.graphql',
 	resolvers
 });
 server.start(() =>
-	console.log(`\nServer is running on http://localhost:4000\n`)
+	console.log(`\nServer is running on http://localhost:${port}\n`)
 );

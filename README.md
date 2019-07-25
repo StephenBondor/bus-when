@@ -74,7 +74,7 @@ Deployed [here]()
 3. `yarn init -y` get the package.json file up to date
 4. `yarn instal` installs all the dependencies
 5. `yarn upgrade --latest` makes sure all dependencies are current
-6. `node src/index.js` to start the server
+6. `yarn server` to start the server
 7. You probably wont be automatically be navigated to
    [http://localhost:4000](http://localhost:4000) but you should brows there to
    see the GQL playground to make sure you are good to go.
@@ -82,3 +82,4 @@ Deployed [here]()
 Un-styled frontend MVP requires:
 
 -   GraphQL-Yoga (an express server fork)
+-   nodemon
