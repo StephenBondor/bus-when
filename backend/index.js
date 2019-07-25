@@ -18,10 +18,18 @@ const resolvers = {
 	}
 };
 
+const options = {
+	port: port
+};
+
 const server = new GraphQLServer({
 	typeDefs: './schema.graphql',
-	resolvers
+	resolvers,
+	options
 });
-server.start(() =>
-	console.log(`\nServer is running on http://localhost:${port}\n`)
-);
+server.start(options, ({port}) => {
+	console.log(`\nServer is running on port ${port}\n`);
+});
+// server.listen({port: process.env.PORT || 4000}).then(({url}) => {
+// 	console.log(`🚀 Server ready at ${url}`);
+// });
