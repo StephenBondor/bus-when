@@ -1,5 +1,5 @@
 	type Query {
-		time: Time
+		time(time: Int!): Time
 		sanityCheck: String!
   	}
 
@@ -11,5 +11,10 @@
 
 	type Stop {
 		name: String!
-		buses: String!
+		buses: [Bus!]!
+	}
+
+	type Bus {
+		route: String
+		arrivals: [Int]
 	}

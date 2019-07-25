@@ -65,12 +65,12 @@ Un-styled frontend MVP requires:
 
 ## Back-end
 
-Deployed [here]()
+Deployed [here](https://frozen-crag-20790.herokuapp.com)
 
 ### How to run on a local machine:
 
 1. This assumes the front end is golden, so start their if you haven't
-2. Make you way into the backend dir `cd bus-when/backend`
+2. Make you way into the root dir `cd bus-when/`
 3. `yarn init -y` get the package.json file up to date
 4. `yarn instal` installs all the dependencies
 5. `yarn upgrade --latest` makes sure all dependencies are current
