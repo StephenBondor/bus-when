@@ -1,0 +1,15 @@
+	type Query {
+		time: Time
+		sanityCheck: String!
+  	}
+
+  	type Time {
+		value: Int!
+		stops: [Stop!]!
+		stop(name: String!): [Stop!]!
+	}
+
+	type Stop {
+		name: String!
+		buses: String!
+	}
