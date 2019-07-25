@@ -1,1 +1,1 @@
-web: npm start --prefix server
+web: yarn start --prefix server
