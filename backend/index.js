@@ -1,6 +1,6 @@
 const {GraphQLServer} = require('graphql-yoga');
 const {gqlArrivals} = require('./ArrivalTimes');
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || 4000;
 
 const resolvers = {
 	Query: {
@@ -28,8 +28,7 @@ const server = new GraphQLServer({
 	options
 });
 server.start(options, ({port}) => {
-	console.log(url);
-	console.log(`\nServer is running on http://localhost:${port}\n`);
+	console.log(`\nServer is running on port ${port}\n`);
 });
 // server.listen({port: process.env.PORT || 4000}).then(({url}) => {
 // 	console.log(`🚀 Server ready at ${url}`);
