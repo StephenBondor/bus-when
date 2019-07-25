@@ -7,7 +7,7 @@
 
 // export const
 
-export const nextArrival = {
+const nextArrival = {
 	0: {
 		1: {1: [0, 15], 2: [2, 17], 3: [4, 19]},
 		2: {1: [2, 17], 2: [4, 19], 3: [6, 21]},
