@@ -1,35 +1,60 @@
 import React from 'react';
 import * as moment from 'moment';
 
-const stops = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+// Components
+import Button from './Button';
+
+// Styles
+import styled from 'styled-components';
+import {colors} from './styles/Colors';
+
+// GLOBALS
+const STOPS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+const HeaderContainer = styled.header`
+	padding: 30px;
+	width: 100%;
+	text-align: center;
+	/* Holy crap this website is awesome for gradients: https://cssgradient.io */
+	background: linear-gradient(
+		6deg,
+		rgba(2, 0, 36, 1) 0%,
+		rgba(9, 9, 121, 1) 42%,
+		rgba(0, 151, 255, 1) 100%
+	);
+	color: ${colors.textOnFG};
+`;
+
+const StyledH1 = styled.h1`
+	font-size: 4rem;
+	margin-bottom: 20px;
+`;
+
+const StyledDate = styled.div`
+	margin: 10px;
+`;
 
 const Header = props => {
 	let {time, active, setActive} = props;
 	let date = moment().format('MMMM D, YYYY');
-
 	return (
-		<header>
-			<div>{date}</div>
-			<div>{time.format('h:mm:ss a')}</div>
-			<div>Choose which stops you would like to see</div>
-			{/* For each stop that is available, render a button which can toggel
+		<HeaderContainer>
+			<StyledH1> Bus When!?</StyledH1>
+			<StyledDate>
+				{date} --- {time.format('h:mm:ss a')}
+			</StyledDate>
+			<div>Choose which stops you would like to see:</div>
+			{/* For each stop that is available, render a button which can toggle
 			viewing that stops info */}
-			{stops.map((stop, i) => (
-				<button
+			{STOPS.map((stop, i) => (
+				<Button
 					key={i}
-					onClick={() => {
-						if (!active.find(i => i === stop))
-							setActive(
-								[...new Set([...active, stop])].sort(
-									(a, b) => a - b
-								)
-							);
-						else setActive([...active.filter(i => i !== stop)]);
-					}}>
-					{stop}
-				</button>
+					stop={stop}
+					active={active}
+					setActive={setActive}
+				/>
 			))}
-		</header>
+		</HeaderContainer>
 	);
 };
 

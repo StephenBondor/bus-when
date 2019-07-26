@@ -132,6 +132,8 @@ conditions change.
 
 Deployed [here](https://epic-euclid-7b3828.netlify.com)
 
+This is a continuous deployment
+
 ### How to run on a local machine:
 
 1. Run `git clone https://github.com/StephenBondor/bus-when.git` in a fresh
@@ -160,6 +162,8 @@ Frontend MVP requires:
 ## Backend
 
 Deployed [here](https://frozen-crag-20790.herokuapp.com)
+
+This is a continuous deployment
 
 ### How to run on a local machine:
 
