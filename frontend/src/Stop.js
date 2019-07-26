@@ -2,7 +2,32 @@ import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 
+// Components
 import Route from './Route';
+
+// Styles
+import styled from 'styled-components';
+
+const StopsContainer = styled.div`
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: bottom;
+	padding: 20px;
+	width: 100%;
+	max-width: 375px;
+`;
+
+const StyledH2 = styled.h2`
+	margin-bottom: 10px;
+`;
+
+//A note on this GQL Query:
+// Each Stop has a period interval every 15 minutes
+// Where the schedule for the next bus repeats indefanately every 15 min.
+// Query the time in minutes % 15 =>
+// map over the 3 routes for that time =>
+// for each route, return their 2 most recent times
 
 // the query shape for the returned data... it could def be improved/simplified
 const STOP_QUERY = gql`
@@ -20,15 +45,9 @@ const STOP_QUERY = gql`
 
 const Stop = props => {
 	let {time, stop} = props;
-
 	return (
-		<>
-			Stop {stop}:
-			{/* // Each Stop has a period interval every 15 minutes
-			// Where the schedule for the next bus repeats indefanately every 15 min.
-			// Query the time in minutes % 15 =>
-			// map over the 3 routes for that time =>
-			// for each route, return their 2 most recent times */}
+		<StopsContainer>
+			<StyledH2>Stop {stop}:</StyledH2>
 			<Query
 				query={STOP_QUERY}
 				variables={{
@@ -38,16 +57,12 @@ const Stop = props => {
 				{({loading, error, data}) => {
 					if (loading) return <> loading... </>;
 					if (error) return <> Error at STOP_QUERY... </>;
-					return (
-						<>
-							{data.time.stop.buses.map((bus, j) => (
-								<Route key={j} bus={bus} />
-							))}
-						</>
-					);
+					return data.time.stop.buses.map((bus, j) => (
+						<Route key={j} bus={bus} />
+					));
 				}}
 			</Query>
-		</>
+		</StopsContainer>
 	);
 };
 
