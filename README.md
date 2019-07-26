@@ -2,7 +2,7 @@
 
 _A next bus arrival time app_
 
-This app is front-end and back-end solution to the problem of delerving
+This app is a frontend and backend solution to the problem of delerving
 up-to-date arrival time information to people waiting for a bus.
 
 Deployed [here](https://epic-euclid-7b3828.netlify.com)
@@ -14,7 +14,8 @@ Deployed [here](https://epic-euclid-7b3828.netlify.com)
 
 #### Stretch
 
--   Properly style it
+-   Properly style it (CHECK, lol, not sure about "properly" more like
+    "something")
 -   Make it subscription/websocket based
 -   Add a database
 
@@ -52,7 +53,7 @@ Deployed [here](https://epic-euclid-7b3828.netlify.com)
 From the get go, this app seemed most suitable to deploy with React and GraphQL
 technologies.
 
-React:
+##### React:
 
 -   Fast modular design makes scaling user interaction changes, design changes,
     and infrastructure changes near seemless and easy to work with
@@ -61,7 +62,7 @@ React:
 -   Hooks allow for outragiously simplified, low boilerplate local state
     management
 
-GraphQL:
+##### GraphQL:
 
 -   Combined with Hooks, GQL effectively removes the necessity for global state
     management: the DB IS the source of truth.
@@ -158,6 +159,10 @@ Frontend MVP requires:
 -   apollo-boost
 -   react-apollo
 -   graphql
+
+Stretch:
+
+-   styled-components
 
 ## Backend
 
