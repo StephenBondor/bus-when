@@ -38,13 +38,9 @@ const Stop = props => {
 				{({loading, error, data}) => {
 					if (loading) return <> loading... </>;
 					if (error) return <> Error at STOP_QUERY... </>;
-					return (
-						<>
-							{data.time.stop.buses.map((bus, j) => (
-								<Route key={j} bus={bus} />
-							))}
-						</>
-					);
+					return data.time.stop.buses.map((bus, j) => (
+						<Route key={j} bus={bus} />
+					));
 				}}
 			</Query>
 		</>
