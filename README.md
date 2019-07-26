@@ -37,6 +37,31 @@ time information to people waiting for a bus.
 
 -   Add Caching
 
+#### User Stories
+
+##### User
+
+Only one user type: End Consumer
+
+##### Stories
+
+As a User I can: Choose which stops I'd like to see information for. As a User I
+can: See the bus services servicing those stops. As a User I can: See the next
+arrival time for each of those services. As a User I can: Use this app on my
+smart phone.
+
+### Design Decision Justification and Notes (Technical Design Doc)
+
+From the get go, this app seemed most suitable to deploy with React and GraphQL.
+
+React: - Fast modular design makes scaling user interaction changes, design
+changes, and infrastructure changes near infinantly scalable and easy to work
+with - Many supported libraries/frameworks - Easy to pass on a React project to
+another developer - Hooks allow for outragiously simplified local state
+management
+
+GraphQL: -
+
 ## Front-end
 
 Deployed [here](https://epic-euclid-7b3828.netlify.com)
@@ -62,6 +87,9 @@ Un-styled frontend MVP requires:
 -   React
 -   Hooks
 -   Moment.js
+-   apollo-boost
+-   react-apollo
+-   graphql
 
 ## Back-end
 
