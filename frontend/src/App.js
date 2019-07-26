@@ -11,7 +11,7 @@ const App = () => {
 
 	// Update the state every second to target "near" real-time information
 	useEffect(() => {
-		let id = setInterval(() => setTime(moment()), 5000);
+		let id = setInterval(() => setTime(moment()), 1000);
 		return () => clearInterval(id);
 	}, []);
 
