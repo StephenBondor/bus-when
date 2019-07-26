@@ -12,7 +12,8 @@ const Header = props => {
 			<div>{date}</div>
 			<div>{time.format('h:mm:ss a')}</div>
 			<div>Choose which stops you would like to see</div>
-
+			{/* For each stop that is available, render a button which can toggel
+			viewing that stops info */}
 			{stops.map((stop, i) => (
 				<button
 					key={i}

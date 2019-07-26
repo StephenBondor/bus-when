@@ -5,7 +5,7 @@
 
   	type Time {
 		value: Int!
-		stop(name: String!): Stop!
+		stop (name: String!): Stop!
 	}
 
 	type Stop {
