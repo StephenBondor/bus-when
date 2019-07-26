@@ -36,7 +36,7 @@ const Stop = props => {
 					name: stop.toString()
 				}}>
 				{({loading, error, data}) => {
-					if (loading) return <> laoding...</>;
+					if (loading) return <> loading... </>;
 					if (error) return <> Error at STOP_QUERY... </>;
 					return (
 						<>
