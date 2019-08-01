@@ -21,7 +21,7 @@ const Button = props => {
 	const clickHandler = () =>
 		isActive
 			? setActive([...new Set([...active, stop])].sort((a, b) => a - b))
-			: setActive([...active.filter(i => i !== stop)]);
+			: setActive(active.filter(i => i !== stop));
 
 	return (
 		<StyledButton off={isActive} onClick={() => clickHandler()}>

@@ -16,18 +16,17 @@ const Route = props => {
 
 	return (
 		<div>
-			Route {bus.route} arriving{' '}
+			Route {bus.route} arriving&nbsp;
 			{!bus.arrivals[0] ? (
 				<>
 					<HLSpan>&nbsp;NOW&nbsp;</HLSpan> and in
-					<HLSpan>&nbsp;{bus.arrivals[1]}&nbsp;mins&nbsp;</HLSpan>
 				</>
 			) : (
 				<>
-					in: <HLSpan>&nbsp;{bus.arrivals[0]} mins&nbsp;</HLSpan> and{' '}
-					<HLSpan>&nbsp;{bus.arrivals[1]} mins&nbsp;</HLSpan>
+					in: <HLSpan>&nbsp;{bus.arrivals[0]} mins&nbsp;</HLSpan> and
 				</>
 			)}
+			&nbsp;<HLSpan>&nbsp;{bus.arrivals[1]}&nbsp;mins&nbsp;</HLSpan>
 		</div>
 	);
 };

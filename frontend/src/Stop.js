@@ -55,8 +55,15 @@ const Stop = props => {
 					name: stop.toString()
 				}}>
 				{({loading, error, data}) => {
-					if (loading) return <> loading... </>;
-					if (error) return <> Error at STOP_QUERY... </>;
+					if (loading) return <> Loading... </>;
+					if (error) return <> Error: STOP_QUERY malfunction </>;
+					if (!Object.keys(data).length)
+						return (
+							<>
+								Error: Data is unpopulated, check if server is
+								running
+							</>
+						);
 					return data.time.stop.buses.map((bus, j) => (
 						<Route key={j} bus={bus} />
 					));

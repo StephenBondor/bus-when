@@ -1,5 +1,4 @@
 import React from 'react';
-import * as moment from 'moment';
 
 // Components
 import Button from './Button';
@@ -36,12 +35,12 @@ const StyledDate = styled.div`
 
 const Header = props => {
 	let {time, active, setActive} = props;
-	let date = moment().format('MMMM D, YYYY');
 	return (
 		<HeaderContainer>
 			<StyledH1> Bus When!?</StyledH1>
 			<StyledDate>
-				{date} --- {time.format('h:mm:ss a')}
+				{time.format('MMMM D, YYYY')}&nbsp;&nbsp;&nbsp;
+				{time.format('h:mm:ss a')}
 			</StyledDate>
 			<div>Choose which stops you would like to see:</div>
 			{/* For each stop that is available, render a button which can toggle
