@@ -1,16 +1,6 @@
-const {GraphQLServer} = require('graphql-yoga');
-const {resolvers} = require('./backend/resolvers');
-var port = process.env.PORT || 4000;
+// This is the basic server start file. All backend server definitions are in './backend/Server'
 
-const options = {
-	port: port
-};
-
-const server = new GraphQLServer({
-	typeDefs: 'backend/schema.graphql',
-	resolvers,
-	options
-});
+const {server, options} = require('./backend/Server');
 server.start(options, ({port}) => {
 	console.log(`\nServer is running on port ${port}\n`);
 });

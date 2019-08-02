@@ -1,4 +1,5 @@
 const {nextArrival} = require('./ArrivalTimes');
+const STOPS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const resolvers = {
 	Query: {
@@ -6,7 +7,8 @@ const resolvers = {
 		time: (parent, args) => ({
 			value: args.time,
 			stops: nextArrival[args.time]
-		})
+		}),
+		stops: () => STOPS
 	},
 	Time: {
 		value: parent => parent.value,

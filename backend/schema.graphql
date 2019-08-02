@@ -1,6 +1,7 @@
 	type Query {
 		time(time: Int!): Time
 		sanityCheck: String!
+		stops: [Int]!
   	}
 
   	type Time {

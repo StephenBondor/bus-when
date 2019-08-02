@@ -1,14 +1,14 @@
 import React from 'react';
+import gql from 'graphql-tag';
 
 // Components
+import {Query} from 'react-apollo';
 import Button from './Button';
+import GQLErrorHandler from './QueryErrorHandling';
 
 // Styles
 import styled from 'styled-components';
 import {colors} from './styles/Colors';
-
-// GLOBALS
-const STOPS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const HeaderContainer = styled.header`
 	padding: 30px;
@@ -45,16 +45,33 @@ const Header = props => {
 			<div>Choose which stops you would like to see:</div>
 			{/* For each stop that is available, render a button which can toggle
 			viewing that stops info */}
-			{STOPS.map((stop, i) => (
-				<Button
-					key={i}
-					stop={stop}
-					active={active}
-					setActive={setActive}
-				/>
-			))}
+			<Query query={STOPS_QUERY}>
+				{({loading, error, data}) =>
+					loading || error || !Object.keys(data).length ? (
+						<GQLErrorHandler
+							status={{name: 'STOPS_QUERY', loading, error, data}}
+						/>
+					) : (
+						data.stops.map((stop, i) => (
+							<Button
+								key={i}
+								stop={stop}
+								active={active}
+								setActive={setActive}
+							/>
+						))
+					)
+				}
+			</Query>
 		</HeaderContainer>
 	);
 };
+
+// GQL Queries
+const STOPS_QUERY = gql`
+	query {
+		stops
+	}
+`;
 
 export default Header;
