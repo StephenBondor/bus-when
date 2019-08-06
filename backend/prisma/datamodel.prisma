@@ -1,0 +1,25 @@
+type Event {
+	id: ID! @id
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+	stop: Stop!
+	route: Route!
+	time: DateTime!
+	nextList: [Event]
+}
+
+type Route {
+	id: ID! @id
+	name: String!
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+	stopList: [Event!]!
+}
+
+type Stop {
+	id: ID! @id
+	name: String!
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+	routeList: [Event!]!
+}
