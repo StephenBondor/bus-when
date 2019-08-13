@@ -16,6 +16,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  bus: (where?: BusWhereInput) => Promise<boolean>;
   event: (where?: EventWhereInput) => Promise<boolean>;
   route: (where?: RouteWhereInput) => Promise<boolean>;
   stop: (where?: StopWhereInput) => Promise<boolean>;
@@ -40,6 +41,25 @@ export interface Prisma {
    * Queries
    */
 
+  bus: (where: BusWhereUniqueInput) => BusNullablePromise;
+  buses: (args?: {
+    where?: BusWhereInput;
+    orderBy?: BusOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Bus>;
+  busesConnection: (args?: {
+    where?: BusWhereInput;
+    orderBy?: BusOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => BusConnectionPromise;
   event: (where: EventWhereUniqueInput) => EventNullablePromise;
   events: (args?: {
     where?: EventWhereInput;
@@ -103,6 +123,22 @@ export interface Prisma {
    * Mutations
    */
 
+  createBus: (data: BusCreateInput) => BusPromise;
+  updateBus: (args: {
+    data: BusUpdateInput;
+    where: BusWhereUniqueInput;
+  }) => BusPromise;
+  updateManyBuses: (args: {
+    data: BusUpdateManyMutationInput;
+    where?: BusWhereInput;
+  }) => BatchPayloadPromise;
+  upsertBus: (args: {
+    where: BusWhereUniqueInput;
+    create: BusCreateInput;
+    update: BusUpdateInput;
+  }) => BusPromise;
+  deleteBus: (where: BusWhereUniqueInput) => BusPromise;
+  deleteManyBuses: (where?: BusWhereInput) => BatchPayloadPromise;
   createEvent: (data: EventCreateInput) => EventPromise;
   updateEvent: (args: {
     data: EventUpdateInput;
@@ -160,6 +196,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  bus: (
+    where?: BusSubscriptionWhereInput
+  ) => BusSubscriptionPayloadSubscription;
   event: (
     where?: EventSubscriptionWhereInput
   ) => EventSubscriptionPayloadSubscription;
@@ -179,6 +218,16 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type StopOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
 export type EventOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -189,11 +238,11 @@ export type EventOrderByInput =
   | "time_ASC"
   | "time_DESC";
 
-export type StopOrderByInput =
+export type BusOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
+  | "startTime_ASC"
+  | "startTime_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -211,55 +260,9 @@ export type RouteOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type EventWhereUniqueInput = AtLeastOne<{
+export type BusWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
-
-export interface EventWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  stop?: Maybe<StopWhereInput>;
-  route?: Maybe<RouteWhereInput>;
-  time?: Maybe<DateTimeInput>;
-  time_not?: Maybe<DateTimeInput>;
-  time_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  time_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  time_lt?: Maybe<DateTimeInput>;
-  time_lte?: Maybe<DateTimeInput>;
-  time_gt?: Maybe<DateTimeInput>;
-  time_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<EventWhereInput[] | EventWhereInput>;
-  OR?: Maybe<EventWhereInput[] | EventWhereInput>;
-  NOT?: Maybe<EventWhereInput[] | EventWhereInput>;
-}
 
 export interface StopWhereInput {
   id?: Maybe<ID_Input>;
@@ -312,6 +315,100 @@ export interface StopWhereInput {
   AND?: Maybe<StopWhereInput[] | StopWhereInput>;
   OR?: Maybe<StopWhereInput[] | StopWhereInput>;
   NOT?: Maybe<StopWhereInput[] | StopWhereInput>;
+}
+
+export interface EventWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  stop?: Maybe<StopWhereInput>;
+  bus?: Maybe<BusWhereInput>;
+  time?: Maybe<DateTimeInput>;
+  time_not?: Maybe<DateTimeInput>;
+  time_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  time_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  time_lt?: Maybe<DateTimeInput>;
+  time_lte?: Maybe<DateTimeInput>;
+  time_gt?: Maybe<DateTimeInput>;
+  time_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<EventWhereInput[] | EventWhereInput>;
+  OR?: Maybe<EventWhereInput[] | EventWhereInput>;
+  NOT?: Maybe<EventWhereInput[] | EventWhereInput>;
+}
+
+export interface BusWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  startTime?: Maybe<DateTimeInput>;
+  startTime_not?: Maybe<DateTimeInput>;
+  startTime_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  startTime_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  startTime_lt?: Maybe<DateTimeInput>;
+  startTime_lte?: Maybe<DateTimeInput>;
+  startTime_gt?: Maybe<DateTimeInput>;
+  startTime_gte?: Maybe<DateTimeInput>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  route?: Maybe<RouteWhereInput>;
+  eventList_every?: Maybe<EventWhereInput>;
+  eventList_some?: Maybe<EventWhereInput>;
+  eventList_none?: Maybe<EventWhereInput>;
+  AND?: Maybe<BusWhereInput[] | BusWhereInput>;
+  OR?: Maybe<BusWhereInput[] | BusWhereInput>;
+  NOT?: Maybe<BusWhereInput[] | BusWhereInput>;
 }
 
 export interface RouteWhereInput {
@@ -367,6 +464,10 @@ export interface RouteWhereInput {
   NOT?: Maybe<RouteWhereInput[] | RouteWhereInput>;
 }
 
+export type EventWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
 export type RouteWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
   name?: Maybe<String>;
@@ -377,21 +478,11 @@ export type StopWhereUniqueInput = AtLeastOne<{
   name?: Maybe<String>;
 }>;
 
-export interface EventCreateInput {
+export interface BusCreateInput {
   id?: Maybe<ID_Input>;
-  stop: StopCreateOneWithoutEventListInput;
+  startTime: DateTimeInput;
   route: RouteCreateOneInput;
-  time: DateTimeInput;
-}
-
-export interface StopCreateOneWithoutEventListInput {
-  create?: Maybe<StopCreateWithoutEventListInput>;
-  connect?: Maybe<StopWhereUniqueInput>;
-}
-
-export interface StopCreateWithoutEventListInput {
-  id?: Maybe<ID_Input>;
-  name: String;
+  eventList?: Maybe<EventCreateManyWithoutBusInput>;
 }
 
 export interface RouteCreateOneInput {
@@ -423,30 +514,46 @@ export interface EventCreateManyWithoutStopInput {
 
 export interface EventCreateWithoutStopInput {
   id?: Maybe<ID_Input>;
-  route: RouteCreateOneInput;
+  bus: BusCreateOneWithoutEventListInput;
   time: DateTimeInput;
 }
 
-export interface EventUpdateInput {
-  stop?: Maybe<StopUpdateOneRequiredWithoutEventListInput>;
-  route?: Maybe<RouteUpdateOneRequiredInput>;
-  time?: Maybe<DateTimeInput>;
+export interface BusCreateOneWithoutEventListInput {
+  create?: Maybe<BusCreateWithoutEventListInput>;
+  connect?: Maybe<BusWhereUniqueInput>;
 }
 
-export interface StopUpdateOneRequiredWithoutEventListInput {
+export interface BusCreateWithoutEventListInput {
+  id?: Maybe<ID_Input>;
+  startTime: DateTimeInput;
+  route: RouteCreateOneInput;
+}
+
+export interface EventCreateManyWithoutBusInput {
+  create?: Maybe<EventCreateWithoutBusInput[] | EventCreateWithoutBusInput>;
+  connect?: Maybe<EventWhereUniqueInput[] | EventWhereUniqueInput>;
+}
+
+export interface EventCreateWithoutBusInput {
+  id?: Maybe<ID_Input>;
+  stop: StopCreateOneWithoutEventListInput;
+  time: DateTimeInput;
+}
+
+export interface StopCreateOneWithoutEventListInput {
   create?: Maybe<StopCreateWithoutEventListInput>;
-  update?: Maybe<StopUpdateWithoutEventListDataInput>;
-  upsert?: Maybe<StopUpsertWithoutEventListInput>;
   connect?: Maybe<StopWhereUniqueInput>;
 }
 
-export interface StopUpdateWithoutEventListDataInput {
-  name?: Maybe<String>;
+export interface StopCreateWithoutEventListInput {
+  id?: Maybe<ID_Input>;
+  name: String;
 }
 
-export interface StopUpsertWithoutEventListInput {
-  update: StopUpdateWithoutEventListDataInput;
-  create: StopCreateWithoutEventListInput;
+export interface BusUpdateInput {
+  startTime?: Maybe<DateTimeInput>;
+  route?: Maybe<RouteUpdateOneRequiredInput>;
+  eventList?: Maybe<EventUpdateManyWithoutBusInput>;
 }
 
 export interface RouteUpdateOneRequiredInput {
@@ -517,8 +624,25 @@ export interface EventUpdateWithWhereUniqueWithoutStopInput {
 }
 
 export interface EventUpdateWithoutStopDataInput {
-  route?: Maybe<RouteUpdateOneRequiredInput>;
+  bus?: Maybe<BusUpdateOneRequiredWithoutEventListInput>;
   time?: Maybe<DateTimeInput>;
+}
+
+export interface BusUpdateOneRequiredWithoutEventListInput {
+  create?: Maybe<BusCreateWithoutEventListInput>;
+  update?: Maybe<BusUpdateWithoutEventListDataInput>;
+  upsert?: Maybe<BusUpsertWithoutEventListInput>;
+  connect?: Maybe<BusWhereUniqueInput>;
+}
+
+export interface BusUpdateWithoutEventListDataInput {
+  startTime?: Maybe<DateTimeInput>;
+  route?: Maybe<RouteUpdateOneRequiredInput>;
+}
+
+export interface BusUpsertWithoutEventListInput {
+  update: BusUpdateWithoutEventListDataInput;
+  create: BusCreateWithoutEventListInput;
 }
 
 export interface EventUpsertWithWhereUniqueWithoutStopInput {
@@ -650,6 +774,75 @@ export interface RouteUpsertNestedInput {
   create: RouteCreateInput;
 }
 
+export interface EventUpdateManyWithoutBusInput {
+  create?: Maybe<EventCreateWithoutBusInput[] | EventCreateWithoutBusInput>;
+  delete?: Maybe<EventWhereUniqueInput[] | EventWhereUniqueInput>;
+  connect?: Maybe<EventWhereUniqueInput[] | EventWhereUniqueInput>;
+  set?: Maybe<EventWhereUniqueInput[] | EventWhereUniqueInput>;
+  disconnect?: Maybe<EventWhereUniqueInput[] | EventWhereUniqueInput>;
+  update?: Maybe<
+    | EventUpdateWithWhereUniqueWithoutBusInput[]
+    | EventUpdateWithWhereUniqueWithoutBusInput
+  >;
+  upsert?: Maybe<
+    | EventUpsertWithWhereUniqueWithoutBusInput[]
+    | EventUpsertWithWhereUniqueWithoutBusInput
+  >;
+  deleteMany?: Maybe<EventScalarWhereInput[] | EventScalarWhereInput>;
+  updateMany?: Maybe<
+    EventUpdateManyWithWhereNestedInput[] | EventUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface EventUpdateWithWhereUniqueWithoutBusInput {
+  where: EventWhereUniqueInput;
+  data: EventUpdateWithoutBusDataInput;
+}
+
+export interface EventUpdateWithoutBusDataInput {
+  stop?: Maybe<StopUpdateOneRequiredWithoutEventListInput>;
+  time?: Maybe<DateTimeInput>;
+}
+
+export interface StopUpdateOneRequiredWithoutEventListInput {
+  create?: Maybe<StopCreateWithoutEventListInput>;
+  update?: Maybe<StopUpdateWithoutEventListDataInput>;
+  upsert?: Maybe<StopUpsertWithoutEventListInput>;
+  connect?: Maybe<StopWhereUniqueInput>;
+}
+
+export interface StopUpdateWithoutEventListDataInput {
+  name?: Maybe<String>;
+}
+
+export interface StopUpsertWithoutEventListInput {
+  update: StopUpdateWithoutEventListDataInput;
+  create: StopCreateWithoutEventListInput;
+}
+
+export interface EventUpsertWithWhereUniqueWithoutBusInput {
+  where: EventWhereUniqueInput;
+  update: EventUpdateWithoutBusDataInput;
+  create: EventCreateWithoutBusInput;
+}
+
+export interface BusUpdateManyMutationInput {
+  startTime?: Maybe<DateTimeInput>;
+}
+
+export interface EventCreateInput {
+  id?: Maybe<ID_Input>;
+  stop: StopCreateOneWithoutEventListInput;
+  bus: BusCreateOneWithoutEventListInput;
+  time: DateTimeInput;
+}
+
+export interface EventUpdateInput {
+  stop?: Maybe<StopUpdateOneRequiredWithoutEventListInput>;
+  bus?: Maybe<BusUpdateOneRequiredWithoutEventListInput>;
+  time?: Maybe<DateTimeInput>;
+}
+
 export interface EventUpdateManyMutationInput {
   time?: Maybe<DateTimeInput>;
 }
@@ -670,6 +863,17 @@ export interface StopUpdateInput {
 
 export interface StopUpdateManyMutationInput {
   name?: Maybe<String>;
+}
+
+export interface BusSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<BusWhereInput>;
+  AND?: Maybe<BusSubscriptionWhereInput[] | BusSubscriptionWhereInput>;
+  OR?: Maybe<BusSubscriptionWhereInput[] | BusSubscriptionWhereInput>;
+  NOT?: Maybe<BusSubscriptionWhereInput[] | BusSubscriptionWhereInput>;
 }
 
 export interface EventSubscriptionWhereInput {
@@ -709,56 +913,19 @@ export interface NodeNode {
   id: ID_Output;
 }
 
-export interface Event {
+export interface Bus {
   id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  time: DateTimeOutput;
-}
-
-export interface EventPromise extends Promise<Event>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  stop: <T = StopPromise>() => T;
-  route: <T = RoutePromise>() => T;
-  time: () => Promise<DateTimeOutput>;
-}
-
-export interface EventSubscription
-  extends Promise<AsyncIterator<Event>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  stop: <T = StopSubscription>() => T;
-  route: <T = RouteSubscription>() => T;
-  time: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface EventNullablePromise
-  extends Promise<Event | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  stop: <T = StopPromise>() => T;
-  route: <T = RoutePromise>() => T;
-  time: () => Promise<DateTimeOutput>;
-}
-
-export interface Stop {
-  id: ID_Output;
-  name: String;
+  startTime: DateTimeOutput;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
 
-export interface StopPromise extends Promise<Stop>, Fragmentable {
+export interface BusPromise extends Promise<Bus>, Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  startTime: () => Promise<DateTimeOutput>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
+  route: <T = RoutePromise>() => T;
   eventList: <T = FragmentableArray<Event>>(args?: {
     where?: EventWhereInput;
     orderBy?: EventOrderByInput;
@@ -770,13 +937,14 @@ export interface StopPromise extends Promise<Stop>, Fragmentable {
   }) => T;
 }
 
-export interface StopSubscription
-  extends Promise<AsyncIterator<Stop>>,
+export interface BusSubscription
+  extends Promise<AsyncIterator<Bus>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  startTime: () => Promise<AsyncIterator<DateTimeOutput>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  route: <T = RouteSubscription>() => T;
   eventList: <T = Promise<AsyncIterator<EventSubscription>>>(args?: {
     where?: EventWhereInput;
     orderBy?: EventOrderByInput;
@@ -788,13 +956,12 @@ export interface StopSubscription
   }) => T;
 }
 
-export interface StopNullablePromise
-  extends Promise<Stop | null>,
-    Fragmentable {
+export interface BusNullablePromise extends Promise<Bus | null>, Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  startTime: () => Promise<DateTimeOutput>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
+  route: <T = RoutePromise>() => T;
   eventList: <T = FragmentableArray<Event>>(args?: {
     where?: EventWhereInput;
     orderBy?: EventOrderByInput;
@@ -865,25 +1032,122 @@ export interface RouteNullablePromise
   }) => T;
 }
 
-export interface EventConnection {
-  pageInfo: PageInfo;
-  edges: EventEdge[];
+export interface Stop {
+  id: ID_Output;
+  name: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
-export interface EventConnectionPromise
-  extends Promise<EventConnection>,
+export interface StopPromise extends Promise<Stop>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  eventList: <T = FragmentableArray<Event>>(args?: {
+    where?: EventWhereInput;
+    orderBy?: EventOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface StopSubscription
+  extends Promise<AsyncIterator<Stop>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  eventList: <T = Promise<AsyncIterator<EventSubscription>>>(args?: {
+    where?: EventWhereInput;
+    orderBy?: EventOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface StopNullablePromise
+  extends Promise<Stop | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  eventList: <T = FragmentableArray<Event>>(args?: {
+    where?: EventWhereInput;
+    orderBy?: EventOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface Event {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  time: DateTimeOutput;
+}
+
+export interface EventPromise extends Promise<Event>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  stop: <T = StopPromise>() => T;
+  bus: <T = BusPromise>() => T;
+  time: () => Promise<DateTimeOutput>;
+}
+
+export interface EventSubscription
+  extends Promise<AsyncIterator<Event>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  stop: <T = StopSubscription>() => T;
+  bus: <T = BusSubscription>() => T;
+  time: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface EventNullablePromise
+  extends Promise<Event | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  stop: <T = StopPromise>() => T;
+  bus: <T = BusPromise>() => T;
+  time: () => Promise<DateTimeOutput>;
+}
+
+export interface BusConnection {
+  pageInfo: PageInfo;
+  edges: BusEdge[];
+}
+
+export interface BusConnectionPromise
+  extends Promise<BusConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<EventEdge>>() => T;
-  aggregate: <T = AggregateEventPromise>() => T;
+  edges: <T = FragmentableArray<BusEdge>>() => T;
+  aggregate: <T = AggregateBusPromise>() => T;
 }
 
-export interface EventConnectionSubscription
-  extends Promise<AsyncIterator<EventConnection>>,
+export interface BusConnectionSubscription
+  extends Promise<AsyncIterator<BusConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<EventEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateEventSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<BusEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateBusSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -907,6 +1171,60 @@ export interface PageInfoSubscription
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
   endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface BusEdge {
+  node: Bus;
+  cursor: String;
+}
+
+export interface BusEdgePromise extends Promise<BusEdge>, Fragmentable {
+  node: <T = BusPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface BusEdgeSubscription
+  extends Promise<AsyncIterator<BusEdge>>,
+    Fragmentable {
+  node: <T = BusSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateBus {
+  count: Int;
+}
+
+export interface AggregateBusPromise
+  extends Promise<AggregateBus>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateBusSubscription
+  extends Promise<AsyncIterator<AggregateBus>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface EventConnection {
+  pageInfo: PageInfo;
+  edges: EventEdge[];
+}
+
+export interface EventConnectionPromise
+  extends Promise<EventConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<EventEdge>>() => T;
+  aggregate: <T = AggregateEventPromise>() => T;
+}
+
+export interface EventConnectionSubscription
+  extends Promise<AsyncIterator<EventConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<EventEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateEventSubscription>() => T;
 }
 
 export interface EventEdge {
@@ -1064,6 +1382,56 @@ export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface BusSubscriptionPayload {
+  mutation: MutationType;
+  node: Bus;
+  updatedFields: String[];
+  previousValues: BusPreviousValues;
+}
+
+export interface BusSubscriptionPayloadPromise
+  extends Promise<BusSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = BusPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = BusPreviousValuesPromise>() => T;
+}
+
+export interface BusSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<BusSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = BusSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = BusPreviousValuesSubscription>() => T;
+}
+
+export interface BusPreviousValues {
+  id: ID_Output;
+  startTime: DateTimeOutput;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface BusPreviousValuesPromise
+  extends Promise<BusPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  startTime: () => Promise<DateTimeOutput>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface BusPreviousValuesSubscription
+  extends Promise<AsyncIterator<BusPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  startTime: () => Promise<AsyncIterator<DateTimeOutput>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface EventSubscriptionPayload {
@@ -1255,11 +1623,15 @@ export type Long = string;
 
 export const models: Model[] = [
   {
+    name: "Stop",
+    embedded: false
+  },
+  {
     name: "Route",
     embedded: false
   },
   {
-    name: "Stop",
+    name: "Bus",
     embedded: false
   },
   {
