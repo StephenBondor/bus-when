@@ -32,5 +32,3 @@ const resolvers = {
 };
 
 module.exports = {resolvers};
-
-// test

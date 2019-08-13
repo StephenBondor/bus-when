@@ -1,3 +1,19 @@
+type Route {
+	id: ID! @id
+	name: String! @unique
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+	stopList: [Stop]
+}
+
+type Stop {
+	id: ID! @id
+	name: String! @unique
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+	eventList: [Event]
+}
+
 type Event {
 	id: ID! @id
 	createdAt: DateTime! @createdAt
@@ -5,21 +21,4 @@ type Event {
 	stop: Stop!
 	route: Route!
 	time: DateTime!
-	nextList: [Event]
-}
-
-type Route {
-	id: ID! @id
-	name: String!
-	createdAt: DateTime! @createdAt
-	updatedAt: DateTime! @updatedAt
-	stopList: [Event!]!
-}
-
-type Stop {
-	id: ID! @id
-	name: String!
-	createdAt: DateTime! @createdAt
-	updatedAt: DateTime! @updatedAt
-	routeList: [Event!]!
 }
