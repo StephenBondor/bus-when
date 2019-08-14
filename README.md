@@ -14,24 +14,55 @@ Deployed [here](https://epic-euclid-7b3828.netlify.com)
 
 #### Stretch
 
--   Properly style it (CHECK, lol, not sure about "properly" more like
-    "something")
+-   Properly style it (CHECK)
+
+        lol, not sure about "properly" more like "something"
+
+-   Add a database (CHECK)
+
+        This is a prisma deploy using MySQL (I think, but gql abstracts
+        a lot of the DB stuff away)
+
+        Database Schema (see `backend/prisma/datamodel.prisma`).
+
+
+        	type Stop {
+        		name: String! @unique
+        		eventList: [Event] (forign key)
+        	}
+
+        	type Route {
+        		name: String! @unique
+        		stopList: [Stop!]! (forign key)
+        	}
+
+        	type Bus {
+        		startTime: DateTime!
+        		route: Route!
+        		eventList: [Event] (forign key)
+        	}
+
+        	type Event {
+        		stop: Stop! (forign key)
+        		bus: Bus! (forign key)
+        		time: DateTime! (forign key)
+        	}
+
+-   Add automated seeding generator (CHECK)
+
+        backend/seeder.js `node seeder`
+
+-   Migrate backend over to new BD backend GQL playground:
+
+        `https://us1.prisma.sh/bondor-e1702b/bus-when/dev`
+
+-   Refactor frontend to access BD instead of hacked data
+-   Add integration tests against expected data
+-   Refactor frontend to use Apollo GQL Hooks
+-   Add user can report late bus
 -   Make it subscription/websocket based
--   Add a database
-
-        Potential Database Schema:
-
-        	A stop -
-        	   can be on multiple bus-routes
-        	   can have multiple arrival times
-        	A bus-route -
-        	   can have one schedule
-        	A schedule -
-        	   can have multiple arrival times
-        	An arrival time can -
-        	   only have one stop
-
--   Add Caching
+-   Add Caching / Optimistic Responce
+-
 
 #### User Stories
 
