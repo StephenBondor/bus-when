@@ -3,7 +3,11 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateEvent {
+/* GraphQL */ `type AggregateBus {
+  count: Int!
+}
+
+type AggregateEvent {
   count: Int!
 }
 
@@ -19,6 +23,159 @@ type BatchPayload {
   count: Long!
 }
 
+type Bus {
+  id: ID!
+  startTime: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  route: Route!
+  eventList(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event!]
+}
+
+type BusConnection {
+  pageInfo: PageInfo!
+  edges: [BusEdge]!
+  aggregate: AggregateBus!
+}
+
+input BusCreateInput {
+  id: ID
+  startTime: DateTime!
+  route: RouteCreateOneInput!
+  eventList: EventCreateManyWithoutBusInput
+}
+
+input BusCreateOneWithoutEventListInput {
+  create: BusCreateWithoutEventListInput
+  connect: BusWhereUniqueInput
+}
+
+input BusCreateWithoutEventListInput {
+  id: ID
+  startTime: DateTime!
+  route: RouteCreateOneInput!
+}
+
+type BusEdge {
+  node: Bus!
+  cursor: String!
+}
+
+enum BusOrderByInput {
+  id_ASC
+  id_DESC
+  startTime_ASC
+  startTime_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type BusPreviousValues {
+  id: ID!
+  startTime: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type BusSubscriptionPayload {
+  mutation: MutationType!
+  node: Bus
+  updatedFields: [String!]
+  previousValues: BusPreviousValues
+}
+
+input BusSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: BusWhereInput
+  AND: [BusSubscriptionWhereInput!]
+  OR: [BusSubscriptionWhereInput!]
+  NOT: [BusSubscriptionWhereInput!]
+}
+
+input BusUpdateInput {
+  startTime: DateTime
+  route: RouteUpdateOneRequiredInput
+  eventList: EventUpdateManyWithoutBusInput
+}
+
+input BusUpdateManyMutationInput {
+  startTime: DateTime
+}
+
+input BusUpdateOneRequiredWithoutEventListInput {
+  create: BusCreateWithoutEventListInput
+  update: BusUpdateWithoutEventListDataInput
+  upsert: BusUpsertWithoutEventListInput
+  connect: BusWhereUniqueInput
+}
+
+input BusUpdateWithoutEventListDataInput {
+  startTime: DateTime
+  route: RouteUpdateOneRequiredInput
+}
+
+input BusUpsertWithoutEventListInput {
+  update: BusUpdateWithoutEventListDataInput!
+  create: BusCreateWithoutEventListInput!
+}
+
+input BusWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  startTime: DateTime
+  startTime_not: DateTime
+  startTime_in: [DateTime!]
+  startTime_not_in: [DateTime!]
+  startTime_lt: DateTime
+  startTime_lte: DateTime
+  startTime_gt: DateTime
+  startTime_gte: DateTime
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  route: RouteWhereInput
+  eventList_every: EventWhereInput
+  eventList_some: EventWhereInput
+  eventList_none: EventWhereInput
+  AND: [BusWhereInput!]
+  OR: [BusWhereInput!]
+  NOT: [BusWhereInput!]
+}
+
+input BusWhereUniqueInput {
+  id: ID
+}
+
 scalar DateTime
 
 type Event {
@@ -26,7 +183,7 @@ type Event {
   createdAt: DateTime!
   updatedAt: DateTime!
   stop: Stop!
-  route: Route!
+  bus: Bus!
   time: DateTime!
 }
 
@@ -39,8 +196,13 @@ type EventConnection {
 input EventCreateInput {
   id: ID
   stop: StopCreateOneWithoutEventListInput!
-  route: RouteCreateOneInput!
+  bus: BusCreateOneWithoutEventListInput!
   time: DateTime!
+}
+
+input EventCreateManyWithoutBusInput {
+  create: [EventCreateWithoutBusInput!]
+  connect: [EventWhereUniqueInput!]
 }
 
 input EventCreateManyWithoutStopInput {
@@ -48,9 +210,15 @@ input EventCreateManyWithoutStopInput {
   connect: [EventWhereUniqueInput!]
 }
 
+input EventCreateWithoutBusInput {
+  id: ID
+  stop: StopCreateOneWithoutEventListInput!
+  time: DateTime!
+}
+
 input EventCreateWithoutStopInput {
   id: ID
-  route: RouteCreateOneInput!
+  bus: BusCreateOneWithoutEventListInput!
   time: DateTime!
 }
 
@@ -141,7 +309,7 @@ input EventSubscriptionWhereInput {
 
 input EventUpdateInput {
   stop: StopUpdateOneRequiredWithoutEventListInput
-  route: RouteUpdateOneRequiredInput
+  bus: BusUpdateOneRequiredWithoutEventListInput
   time: DateTime
 }
 
@@ -151,6 +319,18 @@ input EventUpdateManyDataInput {
 
 input EventUpdateManyMutationInput {
   time: DateTime
+}
+
+input EventUpdateManyWithoutBusInput {
+  create: [EventCreateWithoutBusInput!]
+  delete: [EventWhereUniqueInput!]
+  connect: [EventWhereUniqueInput!]
+  set: [EventWhereUniqueInput!]
+  disconnect: [EventWhereUniqueInput!]
+  update: [EventUpdateWithWhereUniqueWithoutBusInput!]
+  upsert: [EventUpsertWithWhereUniqueWithoutBusInput!]
+  deleteMany: [EventScalarWhereInput!]
+  updateMany: [EventUpdateManyWithWhereNestedInput!]
 }
 
 input EventUpdateManyWithoutStopInput {
@@ -170,14 +350,30 @@ input EventUpdateManyWithWhereNestedInput {
   data: EventUpdateManyDataInput!
 }
 
-input EventUpdateWithoutStopDataInput {
-  route: RouteUpdateOneRequiredInput
+input EventUpdateWithoutBusDataInput {
+  stop: StopUpdateOneRequiredWithoutEventListInput
   time: DateTime
+}
+
+input EventUpdateWithoutStopDataInput {
+  bus: BusUpdateOneRequiredWithoutEventListInput
+  time: DateTime
+}
+
+input EventUpdateWithWhereUniqueWithoutBusInput {
+  where: EventWhereUniqueInput!
+  data: EventUpdateWithoutBusDataInput!
 }
 
 input EventUpdateWithWhereUniqueWithoutStopInput {
   where: EventWhereUniqueInput!
   data: EventUpdateWithoutStopDataInput!
+}
+
+input EventUpsertWithWhereUniqueWithoutBusInput {
+  where: EventWhereUniqueInput!
+  update: EventUpdateWithoutBusDataInput!
+  create: EventCreateWithoutBusInput!
 }
 
 input EventUpsertWithWhereUniqueWithoutStopInput {
@@ -218,7 +414,7 @@ input EventWhereInput {
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
   stop: StopWhereInput
-  route: RouteWhereInput
+  bus: BusWhereInput
   time: DateTime
   time_not: DateTime
   time_in: [DateTime!]
@@ -239,6 +435,12 @@ input EventWhereUniqueInput {
 scalar Long
 
 type Mutation {
+  createBus(data: BusCreateInput!): Bus!
+  updateBus(data: BusUpdateInput!, where: BusWhereUniqueInput!): Bus
+  updateManyBuses(data: BusUpdateManyMutationInput!, where: BusWhereInput): BatchPayload!
+  upsertBus(where: BusWhereUniqueInput!, create: BusCreateInput!, update: BusUpdateInput!): Bus!
+  deleteBus(where: BusWhereUniqueInput!): Bus
+  deleteManyBuses(where: BusWhereInput): BatchPayload!
   createEvent(data: EventCreateInput!): Event!
   updateEvent(data: EventUpdateInput!, where: EventWhereUniqueInput!): Event
   updateManyEvents(data: EventUpdateManyMutationInput!, where: EventWhereInput): BatchPayload!
@@ -277,6 +479,9 @@ type PageInfo {
 }
 
 type Query {
+  bus(where: BusWhereUniqueInput!): Bus
+  buses(where: BusWhereInput, orderBy: BusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Bus]!
+  busesConnection(where: BusWhereInput, orderBy: BusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BusConnection!
   event(where: EventWhereUniqueInput!): Event
   events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event]!
   eventsConnection(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EventConnection!
@@ -686,6 +891,7 @@ input StopWhereUniqueInput {
 }
 
 type Subscription {
+  bus(where: BusSubscriptionWhereInput): BusSubscriptionPayload
   event(where: EventSubscriptionWhereInput): EventSubscriptionPayload
   route(where: RouteSubscriptionWhereInput): RouteSubscriptionPayload
   stop(where: StopSubscriptionWhereInput): StopSubscriptionPayload
