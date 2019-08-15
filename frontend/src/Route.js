@@ -11,24 +11,20 @@ const HLSpan = styled.span`
 	margin: 2px;
 `;
 
-const Route = props => {
-	let {bus} = props;
-
-	return (
-		<div>
-			Route {bus.route} arriving&nbsp;
-			{!bus.arrivals[0] ? (
-				<>
-					<HLSpan>&nbsp;NOW&nbsp;</HLSpan> and in
-				</>
-			) : (
-				<>
-					in: <HLSpan>&nbsp;{bus.arrivals[0]} mins&nbsp;</HLSpan> and
-				</>
-			)}
-			&nbsp;<HLSpan>&nbsp;{bus.arrivals[1]}&nbsp;mins&nbsp;</HLSpan>
-		</div>
-	);
-};
+const Route = ({bus}) => (
+	<div>
+		Route {bus.route} arriving&nbsp;
+		{!bus.arrivals[0] ? (
+			<>
+				<HLSpan>&nbsp;NOW&nbsp;</HLSpan> and in
+			</>
+		) : (
+			<>
+				in: <HLSpan>&nbsp;{bus.arrivals[0]} mins&nbsp;</HLSpan> and
+			</>
+		)}
+		&nbsp;<HLSpan>&nbsp;{bus.arrivals[1]}&nbsp;mins&nbsp;</HLSpan>
+	</div>
+);
 
 export default Route;

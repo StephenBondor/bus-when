@@ -33,39 +33,36 @@ const StyledDate = styled.div`
 	margin: 10px;
 `;
 
-const Header = props => {
-	let {time, active, setActive} = props;
-	return (
-		<HeaderContainer>
-			<StyledH1> Bus When!?</StyledH1>
-			<StyledDate>
-				{time.format('MMMM D, YYYY')}&nbsp;&nbsp;&nbsp;
-				{time.format('h:mm:ss a')}
-			</StyledDate>
-			<div>Choose which stops you would like to see:</div>
-			{/* For each stop that is available, render a button which can toggle
+const Header = ({time, active, setActive}) => (
+	<HeaderContainer>
+		<StyledH1> Bus When!?</StyledH1>
+		<StyledDate>
+			{time.format('MMMM D, YYYY')}&nbsp;&nbsp;&nbsp;
+			{time.format('h:mm:ss a')}
+		</StyledDate>
+		<div>Choose which stops you would like to see:</div>
+		{/* For each stop that is available, render a button which can toggle
 			viewing that stops info */}
-			<Query query={STOPS_QUERY}>
-				{({loading, error, data}) =>
-					loading || error || !Object.keys(data).length ? (
-						<GQLErrorHandler
-							status={{name: 'STOPS_QUERY', loading, error, data}}
+		<Query query={STOPS_QUERY}>
+			{({loading, error, data}) =>
+				loading || error || !Object.keys(data).length ? (
+					<GQLErrorHandler
+						status={{name: 'STOPS_QUERY', loading, error, data}}
+					/>
+				) : (
+					data.stops.map((stop, i) => (
+						<Button
+							key={i}
+							stop={stop}
+							active={active}
+							setActive={setActive}
 						/>
-					) : (
-						data.stops.map((stop, i) => (
-							<Button
-								key={i}
-								stop={stop}
-								active={active}
-								setActive={setActive}
-							/>
-						))
-					)
-				}
-			</Query>
-		</HeaderContainer>
-	);
-};
+					))
+				)
+			}
+		</Query>
+	</HeaderContainer>
+);
 
 // GQL Queries
 const STOPS_QUERY = gql`

@@ -30,32 +30,29 @@ const StyledH2 = styled.h2`
 // map over the 3 routes for that time =>
 // for each route, return their 2 most recent times
 
-const Stop = props => {
-	let {time, stop} = props;
-	return (
-		<StopsContainer>
-			<StyledH2>Stop {stop}:</StyledH2>
-			<Query
-				query={STOP_QUERY}
-				variables={{
-					time: Number(time.format('mm')) % 15,
-					name: stop.toString()
-				}}>
-				{({loading, error, data}) =>
-					loading || error || !Object.keys(data).length ? (
-						<GQLErrorHandler
-							status={{name: 'STOP_QUERY', loading, error, data}}
-						/>
-					) : (
-						data.time.stop.buses.map((bus, j) => (
-							<Route key={j} bus={bus} />
-						))
-					)
-				}
-			</Query>
-		</StopsContainer>
-	);
-};
+const Stop = ({time, stop}) => (
+	<StopsContainer>
+		<StyledH2>Stop {stop}:</StyledH2>
+		<Query
+			query={STOP_QUERY}
+			variables={{
+				time: Number(time.format('mm')) % 15,
+				name: stop.toString()
+			}}>
+			{({loading, error, data}) =>
+				loading || error || !Object.keys(data).length ? (
+					<GQLErrorHandler
+						status={{name: 'STOP_QUERY', loading, error, data}}
+					/>
+				) : (
+					data.time.stop.buses.map((bus, j) => (
+						<Route key={j} bus={bus} />
+					))
+				)
+			}
+		</Query>
+	</StopsContainer>
+);
 
 // the query shape for the returned data... it could def be improved/simplified
 const STOP_QUERY = gql`
