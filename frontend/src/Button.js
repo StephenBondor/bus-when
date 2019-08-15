@@ -14,15 +14,12 @@ const StyledButton = styled.button`
 	border-radius: 20%;
 `;
 
-const Button = props => {
-	let {stop, active, setActive} = props;
+const Button = ({stop, active, setActive}) => {
 	let isActive = !active.find(i => i === stop);
-
 	const clickHandler = () =>
 		isActive
 			? setActive([...new Set([...active, stop])].sort((a, b) => a - b))
 			: setActive(active.filter(i => i !== stop));
-
 	return (
 		<StyledButton off={isActive} onClick={() => clickHandler()}>
 			{stop}

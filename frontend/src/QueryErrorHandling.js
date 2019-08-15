@@ -1,8 +1,6 @@
 import React from 'react';
 
-const GQLErrorHandler = props => {
-	let {loading, error, data, name} = props.status;
-
+const GQLErrorHandler = ({status: {loading, error, data, name}}) => {
 	if (loading) return <> Loading {name}... </>;
 	if (error) {
 		console.log(error);
