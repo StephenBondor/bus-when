@@ -59,10 +59,10 @@ Deployed [here](https://epic-euclid-7b3828.netlify.com)
 -   Refactor frontend to access BD instead of hacked data
 -   Add integration tests against expected data
 -   Refactor frontend to use Apollo GQL Hooks
+-   Add pages for routes, active buses,
 -   Add user can report late bus
 -   Make it subscription/websocket based
 -   Add Caching / Optimistic Responce
--
 
 #### User Stories
 
