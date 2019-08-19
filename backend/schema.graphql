@@ -1,20 +1,20 @@
 	type Query {
-		time(time: Int!): Time
+		timeTest(time: Int!): TimeTypeTest
 		sanityCheck: String!
-		stops: [Int]!
+		stopsTest: [Int]!
   	}
 
-  	type Time {
+  	type TimeTypeTest {
 		value: Int!
-		stop (name: String!): Stop!
+		stop (name: String!): StopTypeTest!
 	}
 
-	type Stop {
+	type StopTypeTest {
 		name: String!
-		buses: [Bus!]!
+		buses: [BusTypeTest!]!
 	}
 
-	type Bus {
+	type BusTypeTest {
 		route: String
 		arrivals: [Int]
 	}

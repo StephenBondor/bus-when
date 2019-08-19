@@ -45,7 +45,7 @@ const Stop = ({time, stop}) => (
 						status={{name: 'STOP_QUERY', loading, error, data}}
 					/>
 				) : (
-					data.time.stop.buses.map((bus, j) => (
+					data.timeTest.stop.buses.map((bus, j) => (
 						<Route key={j} bus={bus} />
 					))
 				)
@@ -57,7 +57,7 @@ const Stop = ({time, stop}) => (
 // the query shape for the returned data... it could def be improved/simplified
 const STOP_QUERY = gql`
 	query StopQuery($time: Int!, $name: String!) {
-		time(time: $time) {
+		timeTest(time: $time) {
 			stop(name: $name) {
 				buses {
 					route

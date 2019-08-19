@@ -50,7 +50,7 @@ const Header = ({time, active, setActive}) => (
 						status={{name: 'STOPS_QUERY', loading, error, data}}
 					/>
 				) : (
-					data.stops.map((stop, i) => (
+					data.stopsTest.map((stop, i) => (
 						<Button
 							key={i}
 							stop={stop}
@@ -67,7 +67,7 @@ const Header = ({time, active, setActive}) => (
 // GQL Queries
 const STOPS_QUERY = gql`
 	query {
-		stops
+		stopsTest
 	}
 `;
 

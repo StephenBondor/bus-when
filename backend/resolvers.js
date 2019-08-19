@@ -4,20 +4,20 @@ const STOPS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const resolvers = {
 	Query: {
 		sanityCheck: () => 'You are not insane',
-		time: (parent, args) => ({
+		timeTest: (parent, args) => ({
 			value: args.time,
 			stops: nextArrival[args.time]
 		}),
-		stops: () => STOPS
+		stopsTest: () => STOPS
 	},
-	Time: {
+	TimeTypeTest: {
 		value: parent => parent.value,
 		stop: (parent, args) => ({
 			name: args.name,
 			buses: parent.stops[args.name]
 		})
 	},
-	Stop: {
+	StopTypeTest: {
 		name: parent => parent.name,
 		buses: parent =>
 			Object.keys(parent.buses).map(i => ({
@@ -25,7 +25,7 @@ const resolvers = {
 				arrivals: parent.buses[i]
 			}))
 	},
-	Bus: {
+	BusTypeTest: {
 		route: parent => parent.route,
 		arrivals: parent => parent.arrivals
 	}
