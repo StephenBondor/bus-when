@@ -23,7 +23,7 @@ const StyledAltText = styled.div`
 const App = () => {
 	// Local state management
 	const [time, setTime] = useState(moment());
-	const [active, setActive] = useState([]);
+	const [active, setActive] = useState([1]);
 
 	// Update the state every second to target "near" real-time information
 	useEffect(() => {

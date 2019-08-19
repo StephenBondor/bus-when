@@ -2,6 +2,7 @@
 		timeTest(time: Int!): TimeTypeTest
 		sanityCheck: String!
 		stopsTest: [Int]!
+		stops: [Int]
   	}
 
   	type TimeTypeTest {

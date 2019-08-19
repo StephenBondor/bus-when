@@ -2,14 +2,20 @@ const {nextArrival} = require('./ArrivalTimes');
 const STOPS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const resolvers = {
+	// Top level Resolver Directory
 	Query: {
 		sanityCheck: () => 'You are not insane',
 		timeTest: (parent, args) => ({
 			value: args.time,
 			stops: nextArrival[args.time]
 		}),
-		stopsTest: () => STOPS
+		stopsTest: () => STOPS,
+		stops: async (parent, args, context, info) => {
+			let stops = await context.prisma.stops();
+			return stops.map(stop => stop.name);
+		}
 	},
+	// Integration Testing Resolvers
 	TimeTypeTest: {
 		value: parent => parent.value,
 		stop: (parent, args) => ({
@@ -26,9 +32,10 @@ const resolvers = {
 			}))
 	},
 	BusTypeTest: {
-		route: parent => parent.route,
+		route: ({route}) => route,
 		arrivals: parent => parent.arrivals
 	}
+	// Actual Resolvers
 };
 
 module.exports = {resolvers};
