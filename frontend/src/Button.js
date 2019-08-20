@@ -14,17 +14,22 @@ const StyledButton = styled.button`
 	border-radius: 20%;
 `;
 
-const Button = ({stop, active, setActive}) => {
-	let isActive = !active.find(i => i === stop);
-	const clickHandler = () =>
-		isActive
-			? setActive([...new Set([...active, stop])].sort((a, b) => a - b))
-			: setActive(active.filter(i => i !== stop));
-	return (
-		<StyledButton off={isActive} onClick={() => clickHandler()}>
-			{stop}
-		</StyledButton>
-	);
-};
+const Button = ({stop, active, setActive}) => (
+	<StyledButton
+		off={!active.find(i => i === stop)}
+		onClick={() => setActive([stop])}>
+		{stop}
+	</StyledButton>
+);
 
 export default Button;
+
+// Buttons have been refactored to only allow one button to be pressable at a time.
+// This may mean it would be good to refactor other code to stop mapping over a list of one
+// Additionally, it may mean it would be good to refactor this setup to use React Router
+//
+// let isNotActive = !active.find(i => i === stop);
+// const clickHandler = () =>
+// 	isNotActive
+// 		? setActive([[...new Set([...active, stop])].sort((a, b) => a - b)])
+// 		: setActive(active.filter(i => i !== stop));

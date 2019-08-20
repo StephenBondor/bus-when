@@ -44,12 +44,14 @@ const Header = ({time, active, setActive}) => (
 		{/* For each stop that is available, render a button which can toggle
 			viewing that stops info */}
 		<Query query={STOPS_QUERY}>
+			{/*STOPS_QUERY_TEST when testing */}
 			{({loading, error, data}) =>
 				loading || error || !Object.keys(data).length ? (
 					<GQLErrorHandler
 						status={{name: 'STOPS_QUERY', loading, error, data}}
 					/>
 				) : (
+					// "data.stopsTests.map..." when testing
 					data.stops.map((stop, i) => (
 						<Button
 							key={i}
@@ -70,5 +72,10 @@ const STOPS_QUERY = gql`
 		stops
 	}
 `;
+// const STOPS_QUERY_TEST = gql`
+// 	query {
+// 		stopsTest
+// 	}
+// `;
 
 export default Header;
