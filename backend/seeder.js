@@ -7,7 +7,7 @@ const NUMBER_OF_ROUTES = 3;
 const ROUTE_DEPARTURE_INTERVAL = 2;
 const ROUTE_RESTART_INTERVAL = 15;
 const TIME_BETWEEN_STOPS = 2;
-const BUS_BUFFER_WINDOW = 60;
+const BUS_BUFFER_WINDOW = 75;
 const DB_DATE_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSS';
 const DB_DATE_FORMAT_ROUNDED = `${DB_DATE_FORMAT.slice(0, 15)}:00.000Z`;
 const STARTING_BUS_AMOUNT =
@@ -124,7 +124,9 @@ async function main() {
 	console.log(
 		'\nSeeding successful!\n\nNow entering continuous deployment every',
 		ROUTE_RESTART_INTERVAL,
-		'minutes... ( control + c to Quit )\n'
+		'minutes... ( control + c to Quit ), ',
+		moment([]).format('DD HH:mm:ss'),
+		'\n'
 	);
 
 	// Ongoing seeding
@@ -144,7 +146,8 @@ async function main() {
 		console.log(
 			' - Fresh buses scheduled and queued for period',
 			additionalTime,
-			'min from start'
+			'min from start',
+			moment([]).format('DD HH:mm:ss')
 		);
 		newBusList = [];
 		additionalTime = additionalTime + ROUTE_RESTART_INTERVAL;
