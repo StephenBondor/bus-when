@@ -2,22 +2,20 @@ import React from 'react';
 
 // Styles
 import styled from 'styled-components';
-import {colors} from './styles/Colors';
+import {colors} from '../styles/Colors';
 
 const StyledButton = styled.button`
 	margin: 5px;
 	padding: 10px;
 	text-decoration: none;
 	/* if the button is active change its color */
-	background: ${props => (props.off ? colors.textOnFG : colors.activeBG)};
+	background: ${({off}) => (off ? colors.textOnFG : colors.activeBG)};
 	min-width: 50px;
 	border-radius: 20%;
 `;
 
 const Button = ({stop, active, setActive}) => (
-	<StyledButton
-		off={!active.find(i => i === stop)}
-		onClick={() => setActive([stop])}>
+	<StyledButton off={active !== stop} onClick={() => setActive(stop)}>
 		{stop}
 	</StyledButton>
 );

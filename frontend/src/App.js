@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import * as moment from 'moment';
 
 // Components
-import Header from './Header';
+import Header from './Header/Header';
 import Stop from './Stop';
 
 // Styles
@@ -23,7 +23,7 @@ const StyledAltText = styled.div`
 const App = () => {
 	// Local state management
 	const [time, setTime] = useState(moment());
-	const [active, setActive] = useState([]);
+	const [active, setActive] = useState(false);
 
 	// Update the state every second to target "near" real-time information
 	useEffect(() => {
@@ -37,10 +37,8 @@ const App = () => {
 			<AppContainer>
 				<Header time={time} active={active} setActive={setActive} />
 				{/* map over all of the actively viewed stops */}
-				{active.length ? (
-					active.map((stop, i) => (
-						<Stop key={i} stop={stop} time={time} />
-					))
+				{active ? (
+					<Stop stop={active} time={time} />
 				) : (
 					<StyledAltText>Arrival times will show here!</StyledAltText>
 				)}

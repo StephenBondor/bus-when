@@ -1,8 +1,8 @@
 import React from 'react';
 import gql from 'graphql-tag';
+import {useQuery} from '@apollo/react-hooks';
 
 // Components
-import {Query} from 'react-apollo';
 import Route from './Route';
 import GQLErrorHandler from './QueryErrorHandling';
 // import StopQueryTest from './test/StopQueryTest';
@@ -24,30 +24,29 @@ const StyledH2 = styled.h2`
 	margin-bottom: 10px;
 `;
 
-const Stop = ({time, stop}) => (
-	<StopsContainer>
-		<StyledH2>Stop {stop}:</StyledH2>
-		<Query
-			query={STOP_QUERY}
-			variables={{
-				time: `${time.format().slice(0, 16)}:00.000-07:00`,
-				stop: stop.toString()
-			}}>
-			{({loading, error, data}) =>
-				loading || error || !Object.keys(data).length ? (
-					<GQLErrorHandler
-						status={{name: 'STOP_QUERY', loading, error, data}}
-					/>
-				) : (
-					data.times
-						.sort((a, b) => a.route > b.route)
-						.map((bus, j) => <Route key={j} bus={bus} />)
-				)
-			}
-		</Query>
-		{/* <StopQueryTest time={time} stop={stop} /> */}
-	</StopsContainer>
-);
+const Stop = ({time, stop}) => {
+	const {data, error, loading} = useQuery(STOP_QUERY, {
+		variables: {
+			time: `${time.format().slice(0, 16)}:00.000-07:00`,
+			stop: stop.toString()
+		}
+	});
+	return (
+		<StopsContainer>
+			<StyledH2>Stop {stop}:</StyledH2>
+			{loading || error || !Object.keys(data).length ? (
+				<GQLErrorHandler
+					status={{name: 'STOP_QUERY', loading, error, data}}
+				/>
+			) : (
+				data.times
+					.sort((a, b) => a.route > b.route)
+					.map((bus, j) => <Route key={j} bus={bus} />)
+			)}
+			{/* <StopQueryTest time={time} stop={stop} /> */}
+		</StopsContainer>
+	);
+};
 
 // Query shape for the returned data...
 const STOP_QUERY = gql`
