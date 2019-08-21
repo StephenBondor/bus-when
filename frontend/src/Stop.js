@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import gql from 'graphql-tag';
 import {useQuery} from '@apollo/react-hooks';
+import {BusWhenContext} from './State/BusWhenContext';
 
 // Components
 import Route from './Route';
@@ -24,14 +25,20 @@ const StyledH2 = styled.h2`
 	margin-bottom: 10px;
 `;
 
-const Stop = ({time, stop}) => {
+const StyledAltText = styled.div`
+	margin-top: 80px;
+`;
+
+const Stop = () => {
+	const [state] = useContext(BusWhenContext);
+	const {active: stop, time} = state;
 	const {data, error, loading} = useQuery(STOP_QUERY, {
 		variables: {
 			time: `${time.format().slice(0, 16)}:00.000-07:00`,
 			stop: stop.toString()
 		}
 	});
-	return (
+	return state.active ? (
 		<StopsContainer>
 			<StyledH2>Stop {stop}:</StyledH2>
 			{loading || error || !Object.keys(data).length ? (
@@ -45,6 +52,8 @@ const Stop = ({time, stop}) => {
 			)}
 			{/* <StopQueryTest time={time} stop={stop} /> */}
 		</StopsContainer>
+	) : (
+		<StyledAltText>Arrival times will show here!</StyledAltText>
 	);
 };
 

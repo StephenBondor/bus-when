@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
+import {BusWhenContext} from '../State/BusWhenContext';
+import * as moment from 'moment';
 
 // Components
 import StopList from './StopList';
@@ -30,16 +32,27 @@ const StyledDate = styled.div`
 	margin: 10px;
 `;
 
-const Header = ({time, active, setActive}) => (
-	<HeaderContainer>
-		<StyledH1> Bus When!?</StyledH1>
-		<StyledDate>
-			{time.format('MMMM D, YYYY')}&nbsp;&nbsp;&nbsp;
-			{time.format('h:mm:ss a')}
-		</StyledDate>
-		<div>Choose which stop you would like to see:</div>
-		<StopList active={active} setActive={setActive} />
-	</HeaderContainer>
-);
+const Header = () => {
+	const [state, setState] = useContext(BusWhenContext);
+	const {time} = state;
 
+	useEffect(() => {
+		let id = setInterval(() => {
+			setState(state => ({...state, time: moment()}));
+		}, 1000);
+		return () => clearInterval(id);
+	});
+
+	return (
+		<HeaderContainer>
+			<StyledH1> Bus When!?</StyledH1>
+			<StyledDate>
+				{time.format('MMMM D, YYYY')}&nbsp;&nbsp;&nbsp;
+				{time.format('h:mm:ss a')}
+			</StyledDate>
+			<div>Choose which stop you would like to see:</div>
+			<StopList />
+		</HeaderContainer>
+	);
+};
 export default Header;

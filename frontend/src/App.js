@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import {BusWhenProvider} from './State/BusWhenContext';
 
 // Components
 import Header from './Header/Header';
@@ -16,35 +16,15 @@ const AppContainer = styled.div`
 	min-height: 100%;
 `;
 
-const StyledAltText = styled.div`
-	margin-top: 80px;
-`;
-
-const App = () => {
-	// Local state management
-	const [time, setTime] = useState(moment());
-	const [active, setActive] = useState(false);
-
-	// Update the state every second to target "near" real-time information
-	useEffect(() => {
-		let id = setInterval(() => setTime(moment()), 1000);
-		return () => clearInterval(id);
-	}, []);
-
-	return (
-		<>
-			<GlobalStyle />
+const App = () => (
+	<>
+		<GlobalStyle />
+		<BusWhenProvider>
 			<AppContainer>
-				<Header time={time} active={active} setActive={setActive} />
-				{/* map over all of the actively viewed stops */}
-				{active ? (
-					<Stop stop={active} time={time} />
-				) : (
-					<StyledAltText>Arrival times will show here!</StyledAltText>
-				)}
+				<Header />
+				<Stop />
 			</AppContainer>
-		</>
-	);
-};
-
+		</BusWhenProvider>
+	</>
+);
 export default App;

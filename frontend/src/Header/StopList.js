@@ -6,15 +6,13 @@ import {useQuery} from '@apollo/react-hooks';
 import Button from './Button';
 import GQLErrorHandler from '../QueryErrorHandling';
 
-const StopList = ({active, setActive}) => {
+const StopList = () => {
 	const {data, error, loading} = useQuery(STOPS_QUERY);
 
 	return loading || error || !Object.keys(data).length ? (
 		<GQLErrorHandler status={{name: 'STOPS_QUERY', loading, error, data}} />
 	) : (
-		data.stops.map((stop, i) => (
-			<Button key={i} stop={stop} active={active} setActive={setActive} />
-		))
+		data.stops.map((stop, i) => <Button key={i} stop={stop} />)
 	);
 };
 

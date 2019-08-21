@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import {BusWhenContext} from '../State/BusWhenContext';
 
 // Styles
 import styled from 'styled-components';
@@ -14,12 +15,16 @@ const StyledButton = styled.button`
 	border-radius: 20%;
 `;
 
-const Button = ({stop, active, setActive}) => (
-	<StyledButton off={active !== stop} onClick={() => setActive(stop)}>
-		{stop}
-	</StyledButton>
-);
-
+const Button = ({stop}) => {
+	const [state, setState] = useContext(BusWhenContext);
+	return (
+		<StyledButton
+			off={state.active !== stop}
+			onClick={() => setState(state => ({...state, active: stop}))}>
+			{stop}
+		</StyledButton>
+	);
+};
 export default Button;
 
 // Buttons have been refactored to only allow one button to be pressable at a time.
