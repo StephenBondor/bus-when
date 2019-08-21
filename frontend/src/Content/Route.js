@@ -2,7 +2,7 @@ import React from 'react';
 
 // Styles
 import styled from 'styled-components';
-import {colors} from './styles/Colors';
+import {colors} from '../styles/Colors';
 
 const HLSpan = styled.span`
 	color: red;

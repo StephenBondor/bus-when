@@ -1,38 +1,28 @@
 import React from 'react';
 import gql from 'graphql-tag';
+import {useQuery} from '@apollo/react-hooks';
 
 // Components
-import {Query} from 'react-apollo';
-import Route from '../Route';
+import Route from '../Content/Route';
 import GQLErrorHandler from '../QueryErrorHandling';
 
 const StopQueryTest = ({time, stop}) => {
+	const variables = {
+		time: Number(time.format('mm')) % 15,
+		name: stop.toString()
+	};
+	const {data, error, loading} = useQuery(STOP_QUERY_TEST, {variables});
+	const status = {name: 'STOP_QUERY_TEST', loading, error, data};
 	return (
 		<>
 			Test data:
-			<Query
-				query={STOP_QUERY_TEST}
-				variables={{
-					time: Number(time.format('mm')) % 15,
-					name: stop.toString()
-				}}>
-				{({loading, error, data}) =>
-					loading || error || !Object.keys(data).length ? (
-						<GQLErrorHandler
-							status={{
-								name: 'STOP_QUERY_TEST',
-								loading,
-								error,
-								data
-							}}
-						/>
-					) : (
-						data.timeTest.stop.buses.map((bus, j) => (
-							<Route key={j} bus={bus} />
-						))
-					)
-				}
-			</Query>
+			{loading || error || !Object.keys(data).length ? (
+				<GQLErrorHandler status={status} />
+			) : (
+				data.timeTest.stop.buses.map((bus, j) => (
+					<Route key={j} bus={bus} />
+				))
+			)}
 		</>
 	);
 };
