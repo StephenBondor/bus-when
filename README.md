@@ -52,15 +52,21 @@ Deployed [here](https://epic-euclid-7b3828.netlify.com)
 
         backend/seeder.js `node seeder`
 
--   Migrate backend over to new BD backend GQL playground:
+-   Migrate backend over to new BD backend GQL playground (CHECK):
 
         `https://us1.prisma.sh/bondor-e1702b/bus-when/dev`
 
--   Refactor frontend to access BD instead of hacked data
--   Add integration tests against expected data
--   Refactor frontend to use Apollo GQL Hooks
--   Add pages for routes, active buses,
--   Add user can report late bus
+-   Refactor frontend to access BD instead of hacked data (CHECK)
+-   Add integration tests against expected data (CHECK)
+-   Refactor frontend to use Apollo GQL Hooks (CHECK)
+-   Add front end functionality:
+
+        Pages for routes
+        Pages for Bus by id
+        Search for stop
+
+-   Add user can report late bus or comment on the condition of a bus they are
+    on
 -   Make it subscription/websocket based
 -   Add Caching / Optimistic Responce
 
