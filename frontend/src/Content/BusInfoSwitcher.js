@@ -20,7 +20,7 @@ const BusInfoSwitcherContainer = styled.div`
 	transition: all 0.2s;
 	&:hover {
 		color: ${colors.hoverColor};
-		cursor: ${props => (props.pointer ? 'pointer' : 'arrow')};
+		cursor: ${({pointer}) => (pointer ? 'pointer' : 'arrow')};
 	}
 	&:active {
 		color: ${colors.active};

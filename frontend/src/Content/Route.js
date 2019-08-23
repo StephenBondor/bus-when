@@ -25,7 +25,15 @@ const HLSpan = styled.span`
 `;
 
 const Route = ({bus}) => {
+	if (bus.arrivals.length === 1) {
+		return (
+			<>
+				need to reload the page, my dude <br />
+			</>
+		);
+	}
 	let arrivals = bus.arrivals.sort((a, b) => a.time > b.time);
+
 	return (
 		<StyledRoute>
 			<BoldSpan>Route {bus.route}</BoldSpan> arriving&nbsp;

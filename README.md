@@ -59,16 +59,18 @@ Deployed [here](https://epic-euclid-7b3828.netlify.com)
 -   Refactor frontend to access BD instead of hacked data (CHECK)
 -   Add integration tests against expected data (CHECK)
 -   Refactor frontend to use Apollo GQL Hooks (CHECK)
--   Re-design frontend
+-   Re-design frontend (CHECK)
 -   Add front end functionality:
 
-        Pages for routes
-        Pages for Bus by id
+        Pages for routes (Kinda a check, on the bus thing)
+        Pages for Bus by id (CHECK)
         Search for stop
 
--   Add user can report late bus or comment on the condition of a bus they are
-    on
--   Make it subscription/websocket based
+-   User can report late bus (CHECK)
+-   Add a global state cache which removes items that are too old
+-   User can report an early bus
+-   User can comment on the condition of a bus they are on
+-   Make it subscription/websocket based (CHECK)
 -   Add Caching / Optimistic Responce
 
 #### User Stories

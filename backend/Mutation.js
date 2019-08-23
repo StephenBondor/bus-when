@@ -3,7 +3,7 @@ let moment = require('moment');
 const DB_DATE_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSS';
 const UNITS = 'minutes';
 
-const updateEvent = async (_, {id, time}, {prisma}) => {
+const updateEvent = async (_, {id}, {prisma}) => {
 	// 0. Get the original time of the event
 	const originalTime = await prisma.event({id}).time();
 	// 1. Get the full list of events that the bus at this events has
@@ -16,8 +16,7 @@ const updateEvent = async (_, {id, time}, {prisma}) => {
 	const busEventListToChange = busEventList.slice(index);
 	// 3. Figure out how much time needs to be added to each event
 	const addedTime = moment().diff(moment(originalTime), UNITS);
-	console.log(addedTime, ` ${UNITS} was added to a route`);
-	// 4. For each event in the list, add that time to the events time in the database
+	// 4. For each event in the list, update that events time in the database
 	let listOfUpdatedEvents = [];
 	let newEvent;
 	for (let i = 0; i < busEventListToChange.length; i++) {
@@ -31,6 +30,7 @@ const updateEvent = async (_, {id, time}, {prisma}) => {
 		});
 		listOfUpdatedEvents.push(newEvent);
 	}
+	console.log(addedTime, ` ${UNITS} was added to a route`);
 	// 5. Return the list of updated events
 	return listOfUpdatedEvents;
 };

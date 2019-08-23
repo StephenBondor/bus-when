@@ -1,16 +1,14 @@
 let moment = require('moment');
 
-const times = async (_, {stop}, {prisma}) => {
-	const queryTime = moment()
-		.subtract(30, 'seconds')
-		.format();
-	return await prisma.events({
+const times = async (_, {stop}, {prisma}) =>
+	await prisma.events({
 		where: {
-			time_gte: queryTime,
+			time_gte: moment()
+				.subtract(1, 'minutes')
+				.format(),
 			stop: {name: stop}
 		}
 	});
-};
 
 const stops = async (_, __, {prisma}) =>
 	(await prisma.stops()).map(stop => stop.name);

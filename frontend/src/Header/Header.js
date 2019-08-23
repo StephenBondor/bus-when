@@ -38,7 +38,7 @@ const Header = () => {
 			setState(state => ({...state, time: moment()}));
 		}, 1000);
 		return () => clearInterval(id);
-	});
+	}, [setState]);
 
 	return (
 		<HeaderContainer>
