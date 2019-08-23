@@ -1,14 +1,29 @@
 	type Query {
 		sanityCheck: String!
-		times(time: String!, stop: String!): [NextArrival]
+		times(stop: String!): [Event]
 		timeTest(time: Int!): TimeTypeTest
 		stops: [Int]
 		stopsTest: [Int]!
+		event(id: String!): Event
   	}
+
+	type Mutation {
+		updateEvent(id: String!, time: String!): [Event]
+	}
+
+	type Subscription {
+		updateEvent: Event
+		newEvent: Event
+	}
 
 	type NextArrival {
 		route: String!
-		arrivals: [Int]
+		arrivals: [ArrivalEvent]
+	}
+
+	type ArrivalEvent {
+		time: Int
+		id: String
 	}
 
   	type TimeTypeTest {
@@ -24,4 +39,41 @@
 	type BusTypeTest {
 		route: String
 		arrivals: [Int]
+	}
+
+
+
+
+	type Stop {
+		id: String
+		name: String
+		createdAt: String
+		updatedAt: String
+		eventList: [Event]
+	}
+
+	type Route {
+		id: String
+		name: String
+		createdAt: String
+		updatedAt: String
+		stopList: [Stop]
+	}
+
+	type Bus {
+		id: String
+		startTime: String
+		createdAt: String
+		updatedAt: String
+		route: Route
+		eventList: [Event]
+	}
+
+	type Event {
+		id: String
+		createdAt: String
+		updatedAt: String
+		stop: Stop
+		bus: Bus
+		time: String
 	}

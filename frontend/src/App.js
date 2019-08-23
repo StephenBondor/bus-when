@@ -3,7 +3,7 @@ import {BusWhenProvider} from './State/BusWhenContext';
 
 // Components
 import Header from './Header/Header';
-import StopLogic from './Content/StopLogic';
+import StopSwitcher from './Content/StopSwitcher';
 
 // Styles
 import styled from 'styled-components';
@@ -22,9 +22,10 @@ const App = () => (
 		<BusWhenProvider>
 			<AppContainer>
 				<Header />
-				<StopLogic />
+				<StopSwitcher />
 			</AppContainer>
 		</BusWhenProvider>
 	</>
 );
+
 export default App;
