@@ -8,7 +8,8 @@ const BusWhenProvider = ({children}) => {
 		active: false,
 		busInfoID: false,
 		time: moment(),
-		lateBus: false
+		lateBus: false,
+		eventAdditions: {}
 	});
 	const {Provider} = BusWhenContext;
 	return <Provider value={[state, setState]}>{children}</Provider>;

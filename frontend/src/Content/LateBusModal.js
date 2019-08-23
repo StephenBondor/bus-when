@@ -2,8 +2,6 @@ import React, {useContext} from 'react';
 import {BusWhenContext} from '../State/BusWhenContext';
 import gql from 'graphql-tag';
 import {useMutation} from '@apollo/react-hooks';
-import moment from 'moment';
-// import STOP_QUERY from './Stop';
 
 // Styles
 import styled from 'styled-components';
@@ -32,9 +30,9 @@ const ModalButton = styled.button`
 	font-size: 2rem;
 	margin: 20px;
 	width: 120px;
-	border: ${props => (props.happy ? `3px solid ${colors.activeBG}` : 'none')};
-	background: ${props => (props.happy ? colors.foreground : colors.textOnFG)};
-	color: ${props => (props.happy ? colors.textOnFG : colors.foreground)};
+	border: ${({happy}) => (happy ? `3px solid ${colors.activeBG}` : 'none')};
+	background: ${({happy}) => (happy ? colors.foreground : colors.textOnFG)};
+	color: ${({happy}) => (happy ? colors.textOnFG : colors.foreground)};
 `;
 
 const BoldSpan = styled.span`
@@ -45,12 +43,8 @@ const BoldSpan = styled.span`
 const onClickHandler = setState =>
 	setState(state => ({...state, lateBus: false}));
 
-const updateHandler = (setState, updateEvent, id, active) => {
-	const variables = {
-		id,
-		time: moment().format()
-	};
-	updateEvent({variables});
+const updateHandler = (setState, updateEvent, id) => {
+	updateEvent({variables: {id}});
 	setState(state => ({...state, lateBus: false}));
 };
 
@@ -64,15 +58,14 @@ const LateBusModal = () => {
 				<BoldSpan>Report a late bus at Stop {active} </BoldSpan>
 				<br /> <br />
 				Only tap "It's here!" once the bus has arrived.
-				<br />
-				<br />
+				<br /> <br />
 				Thank you for keeping the bus arrival times accurate!
 			</InnerModal>
 			<div>
 				<ModalButton
 					happy={true}
 					onClick={() =>
-						updateHandler(setState, updateEvent, lateBus, active)
+						updateHandler(setState, updateEvent, lateBus)
 					}>
 					It's here!
 				</ModalButton>
@@ -85,8 +78,8 @@ const LateBusModal = () => {
 };
 
 const UPDATE_EVENT = gql`
-	mutation UpdateEvent($id: String!, $time: String!) {
-		updateEvent(id: $id, time: $time) {
+	mutation UpdateEvent($id: String!) {
+		updateEvent(id: $id) {
 			id
 			time
 		}

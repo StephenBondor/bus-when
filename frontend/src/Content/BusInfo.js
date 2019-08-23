@@ -18,10 +18,6 @@ const BusInfoContainer = styled.div`
 	width: 100%;
 `;
 
-const FetchedBusContainer = styled.div`
-	/* position: absolute; */
-`;
-
 const CloseButton = styled.div`
 	background: ${colors.foreground};
 	color: ${colors.textOnFG};
@@ -44,14 +40,14 @@ const VisualContainer = styled.div`
 	justify-content: space-evenly;
 	align-items: center;
 	height: 40px;
-	margin-bottom: ${props => (props.reportLate ? '0' : '18px')};
+	margin-bottom: ${({reportLate}) => (reportLate ? '0' : '18px')};
 `;
 
 const StopCircle = styled.div`
 	border-radius: 100%;
 	width: 10px;
 	height: 10px;
-	background: ${props => (props.passed ? 'red' : 'green')};
+	background: ${({passed}) => (passed ? 'red' : 'green')};
 	padding-top: 8px;
 `;
 
@@ -79,34 +75,30 @@ const BusInfo = () => {
 	const {data, error, loading} = useQuery(EVENT_QUERY, {variables});
 	const status = {name: 'expected bus arrival', loading, error, data};
 	const {event} = data;
-	return (
+
+	return loading || error || !Object.keys(data).length ? (
+		<GQLErrorHandler status={status} />
+	) : (
 		<BusInfoContainer>
-			{loading || error || !Object.keys(data).length ? (
-				<GQLErrorHandler status={status} />
-			) : (
-				<FetchedBusContainer>
-					<div>Bus #: {event.bus.id.slice(10, 15).toUpperCase()}</div>
-					<div>
-						Stop {event.stop.name} ETA:{' '}
-						{moment(event.time).format('h:mm:ss a')}
-					</div>
-					<VisualContainer
-						reportLate={moment(event.time).diff(moment()) <= 0}>
-						{event.bus.eventList.map((event, i) => (
-							<StopCircle
-								key={i}
-								passed={moment(event.time).diff(moment()) < 0}>
-								{event.stop.name}
-							</StopCircle>
-						))}
-					</VisualContainer>
-					{moment(event.time).diff(moment()) <= 0 && (
-						<LateBus
-							onClick={() => reportLateBus(setState, busInfoID)}>
-							Late Bus?
-						</LateBus>
-					)}
-				</FetchedBusContainer>
+			<div>Bus #: {event.bus.id.slice(10, 15).toUpperCase()}</div>
+			<div>
+				Stop {event.stop.name} ETA:{' '}
+				{moment(event.time).format('h:mm:ss a')}
+			</div>
+			<VisualContainer
+				reportLate={moment(event.time).diff(moment()) <= 0}>
+				{event.bus.eventList.map((event, i) => (
+					<StopCircle
+						key={i}
+						passed={moment(event.time).diff(moment()) < 0}>
+						{event.stop.name}
+					</StopCircle>
+				))}
+			</VisualContainer>
+			{moment(event.time).diff(moment()) <= 0 && (
+				<LateBus onClick={() => reportLateBus(setState, busInfoID)}>
+					Late Bus?
+				</LateBus>
 			)}
 			<CloseButton onClick={() => onClickHandler(setState)}>
 				▲ Collaps Next Arrival ▲
