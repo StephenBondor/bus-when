@@ -59,6 +59,7 @@ Deployed [here](https://epic-euclid-7b3828.netlify.com)
 -   Refactor frontend to access BD instead of hacked data (CHECK)
 -   Add integration tests against expected data (CHECK)
 -   Refactor frontend to use Apollo GQL Hooks (CHECK)
+-   Re-design frontend
 -   Add front end functionality:
 
         Pages for routes

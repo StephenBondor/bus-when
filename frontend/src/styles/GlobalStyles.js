@@ -34,6 +34,7 @@ export const GlobalStyle = createGlobalStyle`
 
         &:hover{
             color: ${colors.hoverColor};
+			cursor: pointer;
         }
         &:active{
             color: ${colors.active};

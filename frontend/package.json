@@ -5,13 +5,15 @@
   "dependencies": {
     "@apollo/react-hooks": "^3.0.1",
     "apollo-boost": "^0.4.3",
+    "apollo-link-ws": "^1.0.18",
     "graphql": "^14.4.2",
     "moment": "^2.24.0",
     "react": "^16.8.6",
     "react-apollo": "^2.5.8",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
-    "styled-components": "^4.3.2"
+    "styled-components": "^4.3.2",
+    "subscriptions-transport-ws": "^0.9.16"
   },
   "scripts": {
     "start": "react-scripts start",

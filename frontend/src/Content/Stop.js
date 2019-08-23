@@ -1,7 +1,8 @@
 import React, {useContext} from 'react';
 import gql from 'graphql-tag';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery, useSubscription} from '@apollo/react-hooks';
 import {BusWhenContext} from '../State/BusWhenContext';
+import moment from 'moment';
 
 // Components
 import Route from './Route';
@@ -13,7 +14,7 @@ import GQLErrorHandler from '../QueryErrorHandling';
 // Styles
 import styled from 'styled-components';
 
-const StopsContainer = styled.div`
+const StopContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
@@ -23,39 +24,85 @@ const StopsContainer = styled.div`
 	max-width: 375px;
 `;
 
-const StyledH2 = styled.h2`
-	margin-bottom: 10px;
-`;
-
 const Stop = () => {
-	const [{active: stop, time}] = useContext(BusWhenContext);
-	const variables = {
-		time: `${time.format().slice(0, 16)}:00.000-07:00`,
-		stop: stop.toString()
-	};
+	const [{active: stop}] = useContext(BusWhenContext);
+	const variables = {stop: stop.toString()};
 	const {data, error, loading} = useQuery(STOP_QUERY, {variables});
-	const status = {name: 'STOP_QUERY', loading, error, data};
+	const status = {name: 'stop', loading, error, data};
+	const {data: newData, loading: newLoading} = useSubscription(
+		NEW_EVENT_SUBSCRIPTION
+	);
+
+	console.log('subscription data: ', !newLoading && newData);
+
 	return (
-		<StopsContainer>
-			<StyledH2>Stop {stop}:</StyledH2>
+		<StopContainer>
 			{loading || error || !Object.keys(data).length ? (
 				<GQLErrorHandler status={status} />
 			) : (
 				data.times
+					.reduce((r, {id, time, bus}) => {
+						let dur = moment(time)
+							.add(1, 'minute')
+							.diff(moment(), 'minutes');
+						let name = bus.route.name;
+						let index = r.findIndex(({route}) => route === name);
+						if (index !== -1)
+							r[index].arrivals.push({time: dur, id: id});
+						else
+							r.push({
+								route: name,
+								arrivals: [{time: dur, id: id}]
+							});
+						return r;
+					}, [])
 					.sort((a, b) => a.route > b.route)
+					.map(bus => {
+						bus.arrivals = bus.arrivals.filter(
+							time => time.time >= 0
+						);
+						return bus;
+					})
 					.map((bus, j) => <Route key={j} bus={bus} />)
 			)}
 			{/* <StopQueryTest time={time} stop={stop} /> */}
-		</StopsContainer>
+		</StopContainer>
 	);
 };
 
 // Query shape for the returned data...
 const STOP_QUERY = gql`
-	query StopQuery($time: String!, $stop: String!) {
-		times(time: $time, stop: $stop) {
-			route
-			arrivals
+	query StopQuery($stop: String!) {
+		times(stop: $stop) {
+			id
+			time
+			bus {
+				id
+				route {
+					id
+					name
+				}
+			}
+		}
+	}
+`;
+
+const NEW_EVENT_SUBSCRIPTION = gql`
+	subscription onNewEvent {
+		newEvent {
+			id
+			time
+			stop {
+				id
+				name
+			}
+			bus {
+				id
+				route {
+					id
+					name
+				}
+			}
 		}
 	}
 `;

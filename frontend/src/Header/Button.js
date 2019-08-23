@@ -10,9 +10,13 @@ const StyledButton = styled.button`
 	padding: 10px;
 	text-decoration: none;
 	/* if the button is active change its color */
-	background: ${({off}) => (off ? colors.textOnFG : colors.activeBG)};
-	min-width: 50px;
+	background: ${({off, locked}) =>
+		off ? (locked ? colors.textOnFG : colors.inactive) : colors.foreground};
+	border: 2px solid ${({off}) => (off ? colors.foreground : colors.activeBG)};
+	color: ${({off}) => (off ? colors.foreground : colors.textOnFG)};
 	border-radius: 20%;
+	font-size: 2rem;
+	min-width: 50px;
 `;
 
 const Button = ({stop}) => {
@@ -20,7 +24,10 @@ const Button = ({stop}) => {
 	return (
 		<StyledButton
 			off={state.active !== stop}
-			onClick={() => setState(state => ({...state, active: stop}))}>
+			locked={state.lateBus === false}
+			onClick={() =>
+				!state.lateBus && setState(state => ({...state, active: stop}))
+			}>
 			{stop}
 		</StyledButton>
 	);

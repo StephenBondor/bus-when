@@ -11,15 +11,10 @@ import {colors} from '../styles/Colors';
 
 const HeaderContainer = styled.header`
 	padding: 30px;
+	padding-bottom: 10px;
 	width: 100%;
 	text-align: center;
-	/* Holy crap this website is awesome for gradients: https://cssgradient.io */
-	background: linear-gradient(
-		6deg,
-		rgba(2, 0, 36, 1) 0%,
-		rgba(9, 9, 121, 1) 42%,
-		rgba(0, 151, 255, 1) 100%
-	);
+	background: ${colors.foreground};
 	color: ${colors.textOnFG};
 `;
 
@@ -30,11 +25,13 @@ const StyledH1 = styled.h1`
 
 const StyledDate = styled.div`
 	margin: 10px;
+	font-size: 2rem;
+	background: ${colors.textOnFG};
+	color: ${colors.foreground};
 `;
 
 const Header = () => {
-	const [state, setState] = useContext(BusWhenContext);
-	const {time} = state;
+	const [{time}, setState] = useContext(BusWhenContext);
 
 	useEffect(() => {
 		let id = setInterval(() => {
@@ -45,7 +42,7 @@ const Header = () => {
 
 	return (
 		<HeaderContainer>
-			<StyledH1> Bus When!?</StyledH1>
+			<StyledH1> Bus When</StyledH1>
 			<StyledDate>
 				{time.format('MMMM D, YYYY')}&nbsp;&nbsp;&nbsp;
 				{time.format('h:mm:ss a')}
