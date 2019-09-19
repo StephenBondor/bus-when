@@ -67,11 +67,15 @@ Deployed [here](https://epic-euclid-7b3828.netlify.com)
         Search for stop
 
 -   User can report late bus (CHECK)
--   Add a global state cache which removes items that are too old
--   User can report an early bus
+-   Add a global state cache which removes items that are too old (CHECK)
+-   Add updated bus info to the cache (CHECK)
+-   User can report an early bus (CHECK)
 -   User can comment on the condition of a bus they are on
 -   Make it subscription/websocket based (CHECK)
--   Add Caching / Optimistic Responce
+-   Add Caching / Optimistic Responce (CHECK)
+-   Add active to localStorage
+-   Randomize the seeder
+-   Accuracy down to the minute (CHECK)
 
 #### User Stories
 

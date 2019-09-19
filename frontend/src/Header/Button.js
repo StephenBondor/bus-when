@@ -20,13 +20,16 @@ const StyledButton = styled.button`
 `;
 
 const Button = ({stop}) => {
-	const [state, setState] = useContext(BusWhenContext);
+	const [{offScheduleBusEvent, active}, setState] = useContext(
+		BusWhenContext
+	);
 	return (
 		<StyledButton
-			off={state.active !== stop}
-			locked={state.lateBus === false}
+			off={active !== stop}
+			locked={offScheduleBusEvent === false}
 			onClick={() =>
-				!state.lateBus && setState(state => ({...state, active: stop}))
+				!offScheduleBusEvent &&
+				setState(state => ({...state, active: stop}))
 			}>
 			{stop}
 		</StyledButton>

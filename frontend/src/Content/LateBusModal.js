@@ -40,36 +40,42 @@ const BoldSpan = styled.span`
 	font-size: 1.8rem;
 `;
 
-const onClickHandler = setState =>
-	setState(state => ({...state, lateBus: false}));
-
-const updateHandler = (setState, updateEvent, id) => {
-	updateEvent({variables: {id}});
-	setState(state => ({...state, lateBus: false}));
-};
+const resetState = setState =>
+	setState(state => ({
+		...state,
+		offScheduleBusID: false,
+		offScheduleBusEvent: false
+	}));
 
 const LateBusModal = () => {
-	const [{active, lateBus}, setState] = useContext(BusWhenContext);
+	const [state, setState] = useContext(BusWhenContext);
+	const {active, offScheduleBusEvent, offScheduleBusID} = state;
 	const [updateEvent] = useMutation(UPDATE_EVENT);
 
 	return (
 		<StyledLateBusModal>
 			<InnerModal>
-				<BoldSpan>Report a late bus at Stop {active} </BoldSpan>
+				<BoldSpan>
+					Report an off-schedule bus at Stop {active}{' '}
+				</BoldSpan>
 				<br /> <br />
-				Only tap "It's here!" once the bus has arrived.
+				It seems bus {offScheduleBusID.slice(10, 15).toUpperCase()} is
+				not running on time
+				<br /> <br />
+				Tap "It's here!" as the bus arrives.
 				<br /> <br />
 				Thank you for keeping the bus arrival times accurate!
 			</InnerModal>
 			<div>
 				<ModalButton
 					happy={true}
-					onClick={() =>
-						updateHandler(setState, updateEvent, lateBus)
-					}>
+					onClick={() => {
+						updateEvent({variables: {id: offScheduleBusEvent}});
+						resetState(setState);
+					}}>
 					It's here!
 				</ModalButton>
-				<ModalButton onClick={() => onClickHandler(setState)}>
+				<ModalButton onClick={() => resetState(setState)}>
 					Cancel
 				</ModalButton>
 			</div>

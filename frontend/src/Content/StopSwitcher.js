@@ -13,8 +13,8 @@ const StyledAltText = styled.div`
 `;
 
 const StopSwitcher = () => {
-	const [{active, lateBus}] = useContext(BusWhenContext);
-	return lateBus ? (
+	const [{active, offScheduleBusEvent}] = useContext(BusWhenContext);
+	return offScheduleBusEvent ? (
 		<LateBusModal />
 	) : active ? (
 		<Stop />

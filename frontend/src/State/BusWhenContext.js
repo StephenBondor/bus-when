@@ -5,10 +5,11 @@ const BusWhenContext = createContext([{}, () => {}]);
 
 const BusWhenProvider = ({children}) => {
 	const [state, setState] = useState({
-		active: false,
-		busInfoID: false,
+		active: false, // Stop Name: This is the currently selected 'Stop'
+		busInfoID: false, // Event ID: This keeps track of which 'Stop/Route/Expand Next Arrival' to show
 		time: moment(),
-		lateBus: false,
+		offScheduleBusEvent: false, // Event ID: When not false, a modal shows
+		offScheduleBusID: 'banana', // Bus ID: ID of the bus that is late
 		eventAdditions: {}
 	});
 	const {Provider} = BusWhenContext;
