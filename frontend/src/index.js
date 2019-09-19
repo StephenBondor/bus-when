@@ -20,7 +20,7 @@ const URIhttp =
 // websocket address
 const URIws =
 	process.env.NODE_ENV === 'production'
-		? 'ws://frozen-crag-20790.herokuapp.com'
+		? 'wss://frozen-crag-20790.herokuapp.com'
 		: 'ws://localhost:4000/';
 
 // Create an http link:
