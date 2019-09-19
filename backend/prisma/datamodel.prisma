@@ -1,0 +1,33 @@
+type Stop {
+	id: ID! @id
+	name: String! @unique
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+	eventList: [Event]
+}
+
+type Route {
+	id: ID! @id
+	name: String! @unique
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+	stopList: [Stop!]!
+}
+
+type Bus {
+	id: ID! @id
+	startTime: DateTime!
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+	route: Route!
+	eventList: [Event]
+}
+
+type Event {
+	id: ID! @id
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+	stop: Stop!
+	bus: Bus!
+	time: DateTime!
+}

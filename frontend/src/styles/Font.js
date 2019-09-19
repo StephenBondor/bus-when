@@ -1,4 +1,3 @@
-export const Font =
-	'"Iowan Old Style", "Times New Roman", "Ubuntu", "Droid Serif", serif';
+export const Font = '"Arial", "Helvetica", san-serif';
 
 export const TerminalFont = 'Currier, Menlo, monospace';

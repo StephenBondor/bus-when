@@ -14,24 +14,68 @@ Deployed [here](https://epic-euclid-7b3828.netlify.com)
 
 #### Stretch
 
--   Properly style it (CHECK, lol, not sure about "properly" more like
-    "something")
--   Make it subscription/websocket based
--   Add a database
+-   Properly style it (CHECK)
 
-        Potential Database Schema:
+        lol, not sure about "properly" more like "something"
 
-        	A stop -
-        	   can be on multiple bus-routes
-        	   can have multiple arrival times
-        	A bus-route -
-        	   can have one schedule
-        	A schedule -
-        	   can have multiple arrival times
-        	An arrival time can -
-        	   only have one stop
+-   Add a database (CHECK)
 
--   Add Caching
+        This is a prisma deploy using MySQL (I think, but gql abstracts
+        a lot of the DB stuff away)
+
+        Database Schema (see `backend/prisma/datamodel.prisma`).
+
+
+        	type Stop {
+        		name: String! @unique
+        		eventList: [Event] (forign key)
+        	}
+
+        	type Route {
+        		name: String! @unique
+        		stopList: [Stop!]! (forign key)
+        	}
+
+        	type Bus {
+        		startTime: DateTime!
+        		route: Route!
+        		eventList: [Event] (forign key)
+        	}
+
+        	type Event {
+        		stop: Stop! (forign key)
+        		bus: Bus! (forign key)
+        		time: DateTime! (forign key)
+        	}
+
+-   Add automated seeding generator (CHECK)
+
+        backend/seeder.js `node seeder`
+
+-   Migrate backend over to new BD backend GQL playground (CHECK):
+
+        `https://us1.prisma.sh/bondor-e1702b/bus-when/dev`
+
+-   Refactor frontend to access BD instead of hacked data (CHECK)
+-   Add integration tests against expected data (CHECK)
+-   Refactor frontend to use Apollo GQL Hooks (CHECK)
+-   Re-design frontend (CHECK)
+-   Add front end functionality:
+
+        Pages for routes (Kinda a check, on the bus thing)
+        Pages for Bus by id (CHECK)
+        Search for stop
+
+-   User can report late bus (CHECK)
+-   Add a global state cache which removes items that are too old (CHECK)
+-   Add updated bus info to the cache (CHECK)
+-   User can report an early bus (CHECK)
+-   User can comment on the condition of a bus they are on
+-   Make it subscription/websocket based (CHECK)
+-   Add Caching / Optimistic Responce (CHECK)
+-   Add active to localStorage
+-   Randomize the seeder
+-   Accuracy down to the minute (CHECK)
 
 #### User Stories
 

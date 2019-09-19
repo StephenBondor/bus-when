@@ -1,19 +1,79 @@
 	type Query {
-		time(time: Int!): Time
 		sanityCheck: String!
+		times(stop: String!): [Event]
+		timeTest(time: Int!): TimeTypeTest
+		stops: [Int]
+		stopsTest: [Int]!
+		event(id: String!): Event
   	}
 
-  	type Time {
-		value: Int!
-		stop (name: String!): Stop!
+	type Mutation {
+		updateEvent(id: String!): [Event]
 	}
 
-	type Stop {
+	type Subscription {
+		updateEvent: Event
+		newEvent: Event
+	}
+
+	type NextArrival {
+		route: String!
+		arrivals: [ArrivalEvent]
+	}
+
+	type ArrivalEvent {
+		time: Int
+		id: String
+	}
+
+  	type TimeTypeTest {
+		value: Int!
+		stop (name: String!): StopTypeTest!
+	}
+
+	type StopTypeTest {
 		name: String!
-		buses: [Bus!]!
+		buses: [BusTypeTest!]!
+	}
+
+	type BusTypeTest {
+		route: String
+		arrivals: [Int]
+	}
+
+
+
+
+	type Stop {
+		id: String
+		name: String
+		createdAt: String
+		updatedAt: String
+		eventList: [Event]
+	}
+
+	type Route {
+		id: String
+		name: String
+		createdAt: String
+		updatedAt: String
+		stopList: [Stop]
 	}
 
 	type Bus {
-		route: String
-		arrivals: [Int]
+		id: String
+		startTime: String
+		createdAt: String
+		updatedAt: String
+		route: Route
+		eventList: [Event]
+	}
+
+	type Event {
+		id: String
+		createdAt: String
+		updatedAt: String
+		stop: Stop
+		bus: Bus
+		time: String
 	}
