@@ -79,11 +79,11 @@ const BusInfo = () => {
 	const variables = {id: busInfoID};
 	const {data, error, loading} = useQuery(EVENT_QUERY, {variables});
 	const status = {name: 'expected bus arrival', loading, error, data};
-	const {event} = data;
 
 	if (loading || error || !Object.keys(data).length)
 		return <GQLErrorHandler status={status} />;
 
+	const {event} = data;
 	let durMinutes = moment
 		.duration(moment(event.time).diff(moment()))
 		.minutes();
