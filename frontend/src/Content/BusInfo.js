@@ -51,20 +51,25 @@ const StopCircle = styled.div`
 	padding-top: 8px;
 `;
 
-const LateBus = styled.button`
+const OffScheduleBus = styled.button`
 	background: ${colors.textOnFG};
 	color: ${colors.foreground};
 	position: relative;
-	top: -80px;
+	top: -100px;
 	left: 185px;
 	width: 120px;
 	padding-left: 10px;
 	border-radius: 15px;
 	text-decoration: none;
+	/* border: 2px solid yellow; */
 `;
 
-const reportLateBus = (setState, id) =>
-	setState(state => ({...state, lateBus: id}));
+const reportOffScheduleBus = (setState, eventID, busID) =>
+	setState(state => ({
+		...state,
+		offScheduleBusID: busID,
+		offScheduleBusEvent: eventID
+	}));
 
 const onClickHandler = setState =>
 	setState(state => ({...state, busInfoID: false}));
@@ -76,17 +81,31 @@ const BusInfo = () => {
 	const status = {name: 'expected bus arrival', loading, error, data};
 	const {event} = data;
 
-	return loading || error || !Object.keys(data).length ? (
-		<GQLErrorHandler status={status} />
-	) : (
+	if (loading || error || !Object.keys(data).length)
+		return <GQLErrorHandler status={status} />;
+
+	let durMinutes = moment
+		.duration(moment(event.time).diff(moment()))
+		.minutes();
+	let durSeconds = moment
+		.duration(moment(event.time).diff(moment()))
+		.seconds();
+	return (
 		<BusInfoContainer>
 			<div>Bus #: {event.bus.id.slice(10, 15).toUpperCase()}</div>
 			<div>
 				Stop {event.stop.name} ETA:{' '}
 				{moment(event.time).format('h:mm:ss a')}
 			</div>
+			<div>
+				Countdown: {durSeconds <= 0 && '-'}
+				{Math.abs(durMinutes)}:
+				{durSeconds < 10 && durSeconds > -10
+					? `0${Math.abs(durSeconds)}`
+					: Math.abs(durSeconds)}
+			</div>
 			<VisualContainer
-				reportLate={moment(event.time).diff(moment()) <= 0}>
+				reportLate={moment(event.time).diff(moment(), 'minutes') <= 4}>
 				{event.bus.eventList.map((event, i) => (
 					<StopCircle
 						key={i}
@@ -95,10 +114,16 @@ const BusInfo = () => {
 					</StopCircle>
 				))}
 			</VisualContainer>
-			{moment(event.time).diff(moment()) <= 0 && (
-				<LateBus onClick={() => reportLateBus(setState, busInfoID)}>
-					Late Bus?
-				</LateBus>
+			{moment(event.time).diff(moment(), 'minutes') <= 4 && (
+				<OffScheduleBus
+					onClick={() =>
+						reportOffScheduleBus(setState, busInfoID, event.bus.id)
+					}>
+					{moment(event.time).diff(moment()) <= 0
+						? 'Late '
+						: 'Early '}
+					Bus?
+				</OffScheduleBus>
 			)}
 			<CloseButton onClick={() => onClickHandler(setState)}>
 				▲ Collaps Next Arrival ▲

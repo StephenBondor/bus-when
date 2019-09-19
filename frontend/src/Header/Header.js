@@ -28,6 +28,7 @@ const StyledDate = styled.div`
 	font-size: 2rem;
 	background: ${colors.textOnFG};
 	color: ${colors.foreground};
+	white-space: pre-line;
 `;
 
 const Header = () => {
@@ -44,8 +45,7 @@ const Header = () => {
 		<HeaderContainer>
 			<StyledH1> Bus When</StyledH1>
 			<StyledDate>
-				{time.format('MMMM D, YYYY')}&nbsp;&nbsp;&nbsp;
-				{time.format('h:mm:ss a')}
+				{time.format('MMMM D, YYYY')} <br /> {time.format('h:mm:ss a')}
 			</StyledDate>
 			<div>Choose which stop you would like to see:</div>
 			<StopList />
